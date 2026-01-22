@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * <pre>{@code
  * // In your subsystem constants or constructor:
  * LoggedTunableGainsBuilder tunableGains = new LoggedTunableGainsBuilder(
- *     "Launcher/",
+ *     "intake/",
  *     1.0, 0.0, 0.1,  // kP, kI, kD
  *     0.0, 0.0, 0.12, 0.0,  // kS, kG, kV, kA
  *     0, 0, 0, 0, 0  // Motion Magic params

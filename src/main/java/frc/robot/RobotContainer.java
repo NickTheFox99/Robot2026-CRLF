@@ -30,10 +30,9 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.subsystems.launcher.LauncherBehavior;
-import frc.robot.subsystems.launcher.LauncherIOSim;
-import frc.robot.subsystems.launcher.LauncherIOTalonFX;
-import frc.robot.subsystems.launcher.LauncherSubsystem;
+import frc.robot.subsystems.intake.IntakeBehavior;
+import frc.robot.subsystems.intake.IntakeIOSim;
+import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
@@ -55,7 +54,7 @@ public class RobotContainer {
   private final double DRIVE_SPEED = 0.55;
   private final double ANGULAR_SPEED = 0.55;
 
-  private final LauncherSubsystem launcher;
+  private final IntakeSubsystem intake;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -83,8 +82,8 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-
-        launcher = new LauncherSubsystem(new LauncherIOTalonFX(19, 11, canbus));
+        // TODO add TalonFX
+        intake = new IntakeSubsystem(null);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -126,7 +125,7 @@ public class RobotContainer {
                 drive::addVisionMeasurementAutoAlign,
                 new VisionIOPhotonVisionSim(camera0Name, robotToCamera0, drive::getPose),
                 new VisionIOPhotonVisionSim(camera1Name, robotToCamera1, drive::getPose));
-        launcher = new LauncherSubsystem(new LauncherIOSim());
+        intake = new IntakeSubsystem(new IntakeIOSim());
         break;
 
       default:
@@ -145,7 +144,8 @@ public class RobotContainer {
                 new VisionIO() {},
                 new VisionIO() {});
 
-        launcher = new LauncherSubsystem(new LauncherIOTalonFX(19, 11, canbus));
+        // intake = new IntakeSubsystem(new IntakeIOTalonFX(19, 11, canbus));
+        intake = new IntakeSubsystem(null);
         break;
     }
 
@@ -158,15 +158,15 @@ public class RobotContainer {
 
     // Create goal behaviors (wires operator intent → robot goals)
     new RobotGoalsBehavior(robotGoals);
-    new LauncherBehavior(launcher);
+    new IntakeBehavior(intake);
 
     // TODO (students): Create subsystem behaviors here, e.g.:
-    // new LauncherBehavior(launcher);
+    // new intakeBehavior(intake);
     // new DriveBehavior(drive);
 
     // Configure all behaviors
     GoalBehavior.configureAll(operatorIntent);
-    SubsystemBehavior.configureAll(robotGoals, matchState, launcher);
+    SubsystemBehavior.configureAll(robotGoals, matchState, intake);
 
     // Configure the button bindings
     configureButtonBindings();
