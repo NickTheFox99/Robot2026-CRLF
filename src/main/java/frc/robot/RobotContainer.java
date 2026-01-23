@@ -30,6 +30,10 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.indexer.IndexerBehavior;
+import frc.robot.subsystems.indexer.IndexerIOSim;
+import frc.robot.subsystems.indexer.IndexerIOTalonFX;
+import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.subsystems.intake.IntakeBehavior;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -37,6 +41,7 @@ import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.util.AllEvents;
 import frc.robot.util.GoalBehavior;
 import frc.robot.util.SubsystemBehavior;
 
@@ -55,6 +60,7 @@ public class RobotContainer {
   private final double ANGULAR_SPEED = 0.55;
 
   private final IntakeSubsystem intake;
+  private final IndexerSubsystem indexer;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -84,6 +90,9 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         // TODO add TalonFX
         intake = new IntakeSubsystem(null);
+
+        // indexer = new IndexerSubsystem(new IndexerIOTalonFX(19, 11, canbus));
+        indexer = new IndexerSubsystem(new IndexerIOTalonFX());
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -126,6 +135,7 @@ public class RobotContainer {
                 new VisionIOPhotonVisionSim(camera0Name, robotToCamera0, drive::getPose),
                 new VisionIOPhotonVisionSim(camera1Name, robotToCamera1, drive::getPose));
         intake = new IntakeSubsystem(new IntakeIOSim());
+        indexer = new IndexerSubsystem(new IndexerIOSim());
         break;
 
       default:
@@ -146,6 +156,7 @@ public class RobotContainer {
 
         // intake = new IntakeSubsystem(new IntakeIOTalonFX(19, 11, canbus));
         intake = new IntakeSubsystem(null);
+        indexer = new IndexerSubsystem(new IndexerIOTalonFX());
         break;
     }
 
@@ -158,6 +169,7 @@ public class RobotContainer {
 
     // Create goal behaviors (wires operator intent → robot goals)
     new RobotGoalsBehavior(robotGoals);
+    new IndexerBehavior(indexer);
     new IntakeBehavior(intake);
 
     // TODO (students): Create subsystem behaviors here, e.g.:
@@ -167,6 +179,7 @@ public class RobotContainer {
     // Configure all behaviors
     GoalBehavior.configureAll(operatorIntent);
     SubsystemBehavior.configureAll(robotGoals, matchState, intake);
+    SubsystemBehavior.configureAll(new AllEvents(robotGoals, matchState, indexer));
 
     // Configure the button bindings
     configureButtonBindings();

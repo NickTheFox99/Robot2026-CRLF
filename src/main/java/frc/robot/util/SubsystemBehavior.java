@@ -1,8 +1,5 @@
 package frc.robot.util;
 
-import frc.robot.goals.RobotGoalEvents;
-import frc.robot.state.MatchStateEvents;
-import frc.robot.subsystems.intake.IntakeEvents;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,10 +47,9 @@ public abstract class SubsystemBehavior extends Behavior<SubsystemBehavior> {
    * @param matchState Match phase events (disabled, auto, teleop)
    * @param intake
    */
-  public static void configureAll(
-      RobotGoalEvents goals, MatchStateEvents matchState, IntakeEvents intake) {
+  public static final void configureAll(AllEvents events) {
     for (SubsystemBehavior behavior : subsystemBehaviors) {
-      behavior.configure(goals, matchState, intake);
+      behavior.configure(events);
     }
   }
 
@@ -64,6 +60,5 @@ public abstract class SubsystemBehavior extends Behavior<SubsystemBehavior> {
    * @param matchState Match phase events (disabled, auto, teleop)
    * @param intake
    */
-  public abstract void configure(
-      RobotGoalEvents goals, MatchStateEvents matchState, IntakeEvents intake);
+  public abstract void configure(AllEvents events);
 }

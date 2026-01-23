@@ -1,7 +1,6 @@
 package frc.robot.subsystems.intake;
 
-import frc.robot.goals.RobotGoalEvents;
-import frc.robot.state.MatchStateEvents;
+
 import frc.robot.util.SubsystemBehavior;
 
 public class IntakeBehavior extends SubsystemBehavior {
