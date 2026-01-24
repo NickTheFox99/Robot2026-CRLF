@@ -38,18 +38,25 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
   public void setIntakeSpeed(Voltage speed) {
     m_IO.setIntakerTarget(speed);
   }
-  
+
   public Command intakeCommand() {
     return runOnce(
         () -> {
-          setIntakeSpeed(Volts.of(11.0));
+          currentGoal.set(IntakeState.INTAKING);
+        });
+  }
+
+  public Command outtakeCommand() {
+    return runOnce(
+        () -> {
+          currentGoal.set(IntakeState.OUTTAKING);
         });
   }
 
   public Command idleCommand() {
     return runOnce(
         () -> {
-          stop();
+          currentGoal.set(IntakeState.IDLE);
         });
   }
 
@@ -61,6 +68,17 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
   public void periodic() {
     m_IO.updateInputs(logged);
     Logger.processInputs("RobotState/Intake", logged);
+    switch (currentGoal.get()) {
+      case INTAKING:
+        setIntakeSpeed(Volts.of(11.0));
+        break;
+      case OUTTAKING:
+        setIntakeSpeed(Volts.of(-11.0));
+        break;
+      case IDLE:
+        stop();
+        break;
+    }
   }
 
   @Override
@@ -70,6 +88,11 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
 
   @Override
   public Trigger isIntakingTrigger() {
-    return currentGoal.is(IntakeState.LAUNCHING);
+    return currentGoal.is(IntakeState.INTAKING);
+  }
+
+  @Override
+  public Trigger isOuttakingTrigger() {
+    return currentGoal.is(IntakeState.OUTTAKING);
   }
 }

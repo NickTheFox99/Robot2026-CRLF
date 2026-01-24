@@ -6,4 +6,6 @@ public interface IntakeEvents {
   public Trigger isIdleTrigger();
 
   public Trigger isIntakingTrigger();
+
+  public Trigger isOuttakingTrigger();
 }
