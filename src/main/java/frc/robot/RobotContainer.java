@@ -236,32 +236,23 @@ public class RobotContainer {
             () -> -controller.getLeftX() * DRIVE_SPEED,
             () -> -controller.getRightX() * ANGULAR_SPEED));
 
-    // // Lock to 0° when A button is held
-    // controller
-    //     .a()
-    //     .whileTrue(
-    //         DriveCommands.joystickDriveAtAngle(
-    //             drive,
-    //             () -> -controller.getLeftY(),
-    //             () -> -controller.getLeftX(),
-    //             () -> Rotation2d.kZero));
-
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
     operatorIntent.wantsToClimbL1().whileTrue(climber.goToL1Command());
     operatorIntent.wantsToClimbL2().whileTrue(climber.goToL2Command());
     operatorIntent.wantsToClimbL3().whileTrue(climber.goToL3Command());
 
-    // Reset gyro to 0° when B button is pressed
-    // controller
-    //     .b()
-    //     .onTrue(
-    //         Commands.runOnce(
-    //                 () ->
-    //                     drive.setPose(
-    //                         new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
-    //                 drive)
-    //             .ignoringDisable(true));
+    // TODO move to behaviors
+    operatorIntent.wantsToIntake().whileTrue(intake.intakeCommand()).onFalse(intake.idleCommand());
+    operatorIntent
+        .wantsToOuttake()
+        .whileTrue(intake.outtakeCommand())
+        .onFalse(intake.idleCommand());
+
+    operatorIntent
+        .wantsToShoot()
+        .whileTrue(shooter.shooterCommand())
+        .onFalse(shooter.idleCommand());
   }
 
   public void configureCharacterizationButtonBindings() {

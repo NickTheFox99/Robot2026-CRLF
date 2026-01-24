@@ -56,7 +56,17 @@ public class OperatorIntent implements OperatorIntentEvents {
   }
 
   @Override
-  public Trigger wantsToOutake() {
+  public Trigger wantsToIntake() {
     return driver.a();
+  }
+
+  @Override
+  public Trigger wantsToShoot() {
+    return driver.y();
+  }
+
+  @Override
+  public Trigger wantsToOuttake() {
+    return driver.b();
   }
 }

@@ -13,8 +13,6 @@ public interface OperatorIntentEvents {
 
   Trigger wantsToIntakeTrigger();
 
-  Trigger wantsToOutake();
-
   Trigger wantsToClimbL0();
 
   Trigger wantsToClimbL1();
@@ -22,4 +20,10 @@ public interface OperatorIntentEvents {
   Trigger wantsToClimbL2();
 
   Trigger wantsToClimbL3();
+  
+  Trigger wantsToIntake();
+
+  Trigger wantsToOuttake();
+
+  Trigger wantsToShoot();
 }
