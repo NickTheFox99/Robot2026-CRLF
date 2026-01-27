@@ -51,13 +51,9 @@ public abstract class SubsystemBehavior extends Behavior<SubsystemBehavior> {
    * @param matchState Match phase events (disabled, auto, teleop)
    * @param intake
    */
-  public static void configureAll(
-      RobotGoalEvents goals,
-      MatchStateEvents matchState,
-      IntakeEvents intake,
-      ClimberEvents climber) {
+  public static final void configureAll(AllEvents events) {
     for (SubsystemBehavior behavior : subsystemBehaviors) {
-      behavior.configure(goals, matchState, intake, climber);
+      behavior.configure(events);
     }
   }
 
@@ -78,9 +74,5 @@ public abstract class SubsystemBehavior extends Behavior<SubsystemBehavior> {
    * @param matchState Match phase events (disabled, auto, teleop)
    * @param intake
    */
-  public abstract void configure(
-      RobotGoalEvents goals,
-      MatchStateEvents matchState,
-      IntakeEvents intake,
-      ClimberEvents climber);
+  public abstract void configure(AllEvents events);
 }

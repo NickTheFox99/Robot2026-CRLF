@@ -1,5 +1,6 @@
 package frc.robot.subsystems.intake;
 
+import frc.robot.util.AllEvents;
 import frc.robot.goals.RobotGoalEvents;
 import frc.robot.state.MatchStateEvents;
 import frc.robot.subsystems.climber.ClimberEvents;
@@ -14,13 +15,8 @@ public class IntakeBehavior extends SubsystemBehavior {
   }
 
   @Override
-  public void configure(
-      RobotGoalEvents goals,
-      MatchStateEvents matchState,
-      IntakeEvents intakeState,
-      ClimberEvents climberState) {
-    goals.isLaunchingTrigger().whileTrue(this.intake.intakeCommand());
-    goals.isIdleTrigger().whileTrue(this.intake.idleCommand());
-    // goals.isClimbing().whileTrue(this.intake.idleCommand());
+  public void configure(AllEvents events) {
+    events.goals().isShootingTrigger().whileTrue(this.intake.intakeCommand());
+    events.goals().isIdleTrigger().whileTrue(this.intake.idleCommand());
   }
 }

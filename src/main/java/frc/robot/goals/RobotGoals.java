@@ -14,7 +14,7 @@ import frc.robot.util.VirtualSubsystem;
  *
  * <p>TODO (students): Add goal triggers for each value in RobotGoal enum
  */
-public class RobotGoals extends VirtualSubsystem implements RobotGoalEvents {
+public class RobotGoals extends VirtualSubsystem implements RobotEvents {
 
   private final EnumState<RobotGoal> currentGoal =
       new EnumState<>("RobotGoals/Goal", RobotGoal.IDLE);
@@ -25,20 +25,30 @@ public class RobotGoals extends VirtualSubsystem implements RobotGoalEvents {
     return Commands.runOnce(() -> currentGoal.set(goal));
   }
 
-  @Override
-  public Trigger isIdleTrigger() {
-    return currentGoal.is(RobotGoal.IDLE);
-  }
-
-  public RobotGoal getCurrentGoal() {
-    return currentGoal.get();
-  }
+  // public RobotGoal getCurrentGoal() {
+  //   return currentGoal.get();
+  // }
 
   @Override
   public void periodic() {}
 
   @Override
-  public Trigger isLaunchingTrigger() {
+  public Trigger isIdleTrigger() {
+    return currentGoal.is(RobotGoal.IDLE);
+  }
+
+  @Override
+  public Trigger isIntakingTrigger() {
     return currentGoal.is(RobotGoal.INTAKING);
+  }
+
+  @Override
+  public Trigger isOuttakingTrigger() {
+    return currentGoal.is(RobotGoal.OUTTAKING);
+  }
+
+  @Override
+  public Trigger isShootingTrigger() {
+    return currentGoal.is(RobotGoal.SHOOTING);
   }
 }
