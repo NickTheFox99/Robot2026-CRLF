@@ -1,6 +1,9 @@
 package frc.robot.subsystems.intake;
 
 import frc.robot.util.AllEvents;
+import frc.robot.goals.RobotGoalEvents;
+import frc.robot.state.MatchStateEvents;
+import frc.robot.subsystems.climber.ClimberEvents;
 import frc.robot.util.SubsystemBehavior;
 
 public class IntakeBehavior extends SubsystemBehavior {

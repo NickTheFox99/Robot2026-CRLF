@@ -14,4 +14,11 @@ public interface OperatorIntentEvents {
   Trigger wantsToOutakeTrigger();
 
   Trigger wantsToIntakeTrigger();
+  Trigger wantsToOutake();
+
+  Trigger wantsToClimbL1();
+
+  Trigger wantsToClimbL2();
+
+  Trigger wantsToClimbL3();
 }
