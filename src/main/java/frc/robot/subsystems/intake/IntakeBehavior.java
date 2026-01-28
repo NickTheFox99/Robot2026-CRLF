@@ -14,7 +14,7 @@ public class IntakeBehavior extends SubsystemBehavior {
   @Override
   public void configure(AllEvents events) {
     events.goals().isIntakingTrigger().whileTrue(this.intake.intakeCommand());
-    events.goals().isOuttakingTrigger().whileTrue (this.intake.outtakeCommand());
+    events.goals().isOuttakingTrigger().whileTrue(this.intake.outtakeCommand());
     events.goals().isIdleTrigger().whileTrue(this.intake.idleCommand());
   }
 }
