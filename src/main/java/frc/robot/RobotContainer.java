@@ -20,6 +20,9 @@ import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -35,6 +38,7 @@ import frc.robot.goals.RobotGoalsBehavior;
 import frc.robot.operator.OperatorIntent;
 import frc.robot.state.MatchState;
 import frc.robot.subsystems.climber.ClimberBehavior;
+import frc.robot.subsystems.climber.ClimberIO;
 import frc.robot.subsystems.climber.ClimberIOSim;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.Drive;
@@ -48,10 +52,12 @@ import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.indexer.IndexerIOTalonFX;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.subsystems.intake.IntakeBehavior;
+import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterBehavior;
 import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.VisionIO;
@@ -107,9 +113,37 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
         // TODO add TalonFX
-        intake = new IntakeSubsystem(null);
-        climber = new ClimberSubsystem(null);
-        shooter = new ShooterSubsystem(null);
+        intake =
+            new IntakeSubsystem(
+                new IntakeIO() {
+
+                  @Override
+                  public void setIntakerTarget(Voltage target) {}
+
+                  @Override
+                  public void stop() {}
+
+                  @Override
+                  public void updateInputs(IntakeInputs input) {}
+
+                  @Override
+                  public void setIntakerExtenderTarget(Angle angle) {
+                    // TODO Auto-generated method stub
+                    throw new UnsupportedOperationException(
+                        "Unimplemented method 'setIntakerExtenderTarget'");
+                  }
+                });
+        climber =
+            new ClimberSubsystem(
+                new ClimberIO() {
+
+                  @Override
+                  public void setClimberHeight(Distance target) {}
+
+                  @Override
+                  public void updateInputs(ClimberInputs input) {}
+                });
+        shooter = new ShooterSubsystem(new ShooterIOTalonFX(20, 10, 14, canbus));
         indexer =
             new IndexerSubsystem(new IndexerIOTalonFX(0, 1, canbus)); // TODO: find real motor IDs
 
