@@ -25,7 +25,7 @@ public interface IntakeIO {
 
   public void setIntakerTarget(Voltage target);
 
-  public void setIntakerExtenderTarget(Angle angle);
+  public void setIntakerExtenderTarget(Angle angle, Voltage volts);
 
   public void stop();
 

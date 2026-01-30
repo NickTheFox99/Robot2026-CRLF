@@ -14,11 +14,10 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class IntakeIOSim implements IntakeIO {
-  private Voltage intakeAppliedVoltage = Volts.mutable(0.0);
-  private Voltage intakeExtenderAppliedVoltage = Volts.mutable(0.0);
-
   private Voltage m_appliedIntakeVoltage = Volts.mutable(0.0);
   private Voltage m_appliedIntakeExtenderVoltage = Volts.mutable(0.0);
+
+  private IntakeInputsAutoLogged logged = new IntakeInputsAutoLogged();
 
   // physical constants for intake extender (NOT ACCURATE)
   private static final double kArmGearRatio = 100.0;
@@ -64,6 +63,7 @@ public class IntakeIOSim implements IntakeIO {
 
     ff = new ArmFeedforward(kS, kG, kV, kA);
     controller.setGoal(startingExtenderAngle.in(Degrees));
+    logged.intakeVoltage = Volts.mutable(0);
   }
 
   /** Updates the applied voltage to drive the arm towards the noted position */
@@ -91,12 +91,13 @@ public class IntakeIOSim implements IntakeIO {
 
   @Override
   public void setIntakerTarget(Voltage target) {
-    this.intakeAppliedVoltage = target;
+    this.m_appliedIntakeVoltage = target;
   }
 
   @Override
-  public void setIntakerExtenderTarget(Angle angle) {
+  public void setIntakerExtenderTarget(Angle angle, Voltage target) {
     controller.setGoal(angle.in(Degrees));
+    this.m_appliedIntakeExtenderVoltage = target;
   }
 
   @Override
@@ -104,7 +105,7 @@ public class IntakeIOSim implements IntakeIO {
     Angle currentAngle = Radians.of(intakeExtenderSim.getAngleRads());
     controller.reset(currentAngle.in(Degrees));
     setIntakerTarget(Volts.of(0));
-    setIntakerExtenderTarget(Degrees.of(0));
+    setIntakerExtenderTarget(Degrees.of(0), Volts.of(0));
   }
 
   @Override
@@ -127,10 +128,10 @@ public class IntakeIOSim implements IntakeIO {
         Degrees.convertFrom(intakeExtenderSim.getAngleRads(), Radians), Degrees);
 
     // Periodic
-    intakeSim.setInputVoltage(intakeAppliedVoltage.in(Volts));
+    intakeSim.setInputVoltage(m_appliedIntakeVoltage.in(Volts));
     intakeSim.update(0.02);
 
-    intakeExtenderSim.setInputVoltage(intakeExtenderAppliedVoltage.in(Volts));
-    intakeSim.update(0.02);
+    intakeExtenderSim.setInputVoltage(m_appliedIntakeExtenderVoltage.in(Volts));
+    intakeExtenderSim.update(0.02);
   }
 }
