@@ -95,9 +95,8 @@ public class IntakeIOSim implements IntakeIO {
   }
 
   @Override
-  public void setIntakerExtenderTarget(Angle angle, Voltage target) {
+  public void setIntakerExtenderTarget(Angle angle) {
     controller.setGoal(angle.in(Degrees));
-    this.m_appliedIntakeExtenderVoltage = target;
   }
 
   @Override
@@ -105,7 +104,7 @@ public class IntakeIOSim implements IntakeIO {
     Angle currentAngle = Radians.of(intakeExtenderSim.getAngleRads());
     controller.reset(currentAngle.in(Degrees));
     setIntakerTarget(Volts.of(0));
-    setIntakerExtenderTarget(Degrees.of(0), Volts.of(0));
+    setIntakerExtenderTarget(Degrees.of(0));
   }
 
   @Override

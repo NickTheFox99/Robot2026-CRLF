@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public interface OperatorIntentEvents {
   Trigger wantsToScoreTrigger();
 
-  Trigger wantsToIntakeTrigger();
-
   Trigger wantsToClimbL0();
 
   Trigger wantsToClimbL1();
@@ -20,8 +18,6 @@ public interface OperatorIntentEvents {
   Trigger wantsToClimbL2();
 
   Trigger wantsToClimbL3();
-  
-  Trigger wantsToIntake();
 
   Trigger wantsToOuttake();
 

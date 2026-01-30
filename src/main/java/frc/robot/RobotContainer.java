@@ -242,13 +242,6 @@ public class RobotContainer {
     operatorIntent.wantsToClimbL2().whileTrue(climber.goToL2Command());
     operatorIntent.wantsToClimbL3().whileTrue(climber.goToL3Command());
 
-    // TODO move to behaviors
-    operatorIntent.wantsToIntake().whileTrue(intake.intakeCommand()).onFalse(intake.idleCommand());
-    operatorIntent
-        .wantsToOuttake()
-        .whileTrue(intake.outtakeCommand())
-        .onFalse(intake.idleCommand());
-
     operatorIntent
         .wantsToShoot()
         .whileTrue(shooter.shooterCommand())

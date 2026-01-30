@@ -51,8 +51,8 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
    *
    * @param speed
    */
-  public void setIntakeAngle(Angle angle, Voltage volts) {
-    m_IO.setIntakerExtenderTarget(angle, volts);
+  public void setIntakeAngle(Angle angle) {
+    m_IO.setIntakerExtenderTarget(angle);
   }
 
   public Command intakeCommand() {
@@ -88,17 +88,17 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
       case INTAKING:
         // filler units rn
         setIntakeSpeed(Volts.of(11.0));
-        setIntakeAngle(Degrees.of(0.0), Volts.of(11.0));
+        setIntakeAngle(Degrees.of(90.0));
         break;
       case OUTTAKING:
         // filler units rn
         setIntakeSpeed(Volts.of(-11.0));
-        setIntakeAngle(Degrees.of(0.0), Volts.of(11.0));
+        setIntakeAngle(Degrees.of(90.0));
         break;
       case IDLE:
         stop();
         // filler values, may need to be negative
-        setIntakeAngle(Degrees.of(90.0), Volts.of(0.0));
+        setIntakeAngle(Degrees.of(0.0));
         break;
     }
   }

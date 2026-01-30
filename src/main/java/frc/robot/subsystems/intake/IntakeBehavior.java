@@ -13,8 +13,16 @@ public class IntakeBehavior extends SubsystemBehavior {
 
   @Override
   public void configure(AllEvents events) {
-    events.goals().isIntakingTrigger().whileTrue(this.intake.intakeCommand());
-    events.goals().isOuttakingTrigger().whileTrue(this.intake.outtakeCommand());
+    events
+        .match()
+        .isTeleopEnabled()
+        .and(events.goals().isOuttakingTrigger().negate())
+        .whileTrue(this.intake.intakeCommand());
+    events
+        .goals()
+        .isOuttakingTrigger()
+        .whileTrue(this.intake.outtakeCommand())
+        .onFalse(this.intake.intakeCommand());
     events.goals().isIdleTrigger().whileTrue(this.intake.idleCommand());
   }
 }
