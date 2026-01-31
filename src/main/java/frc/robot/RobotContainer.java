@@ -7,11 +7,9 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
 import static frc.robot.subsystems.vision.VisionConstants.camera0Name;
 import static frc.robot.subsystems.vision.VisionConstants.camera1Name;
@@ -22,10 +20,8 @@ import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
@@ -35,7 +31,6 @@ import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.DriveCommands;
@@ -74,10 +69,8 @@ import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllEvents;
 import frc.robot.util.GoalBehavior;
 import frc.robot.util.SubsystemBehavior;
-import java.util.stream.IntStream;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
-import org.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnFly;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -300,7 +293,7 @@ public class RobotContainer {
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Maple-Sim Button Bindings 
+    // Maple-Sim Button Bindings
     // // Spawns Fuel
     // controller
     //     .povUp()
@@ -312,7 +305,8 @@ public class RobotContainer {
     //                         new RebuiltFuelOnFly(
     //                             driveSimulation.getSimulatedDriveTrainPose().getTranslation(),
     //                             new Translation2d(0.4, 0),
-    //                             driveSimulation.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+    //
+    // driveSimulation.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
     //                             driveSimulation.getSimulatedDriveTrainPose().getRotation(),
     //                             Meters.of(1.35),
     //                             MetersPerSecond.of(1.5),
