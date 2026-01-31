@@ -10,11 +10,18 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 public class IndexerIOSim implements IndexerIO {
 
   private Voltage indexerAppliedVoltage = Volts.mutable(0.0);
+  private Voltage feederAppliedVoltage = Volts.mutable(0.0);
 
   private final FlywheelSim indexerSim;
+  private final FlywheelSim feederSim;
 
   public IndexerIOSim() {
     indexerSim =
+        new FlywheelSim(
+            LinearSystemId.createFlywheelSystem(DCMotor.getKrakenX60Foc(1), 0.0005, 1),
+            DCMotor.getKrakenX60Foc(1),
+            0.01);
+    feederSim =
         new FlywheelSim(
             LinearSystemId.createFlywheelSystem(DCMotor.getKrakenX60Foc(1), 0.0005, 1),
             DCMotor.getKrakenX60Foc(1),
@@ -27,17 +34,30 @@ public class IndexerIOSim implements IndexerIO {
   }
 
   @Override
+  public void setFeederTarget(Voltage volts) {
+    this.feederAppliedVoltage = volts;
+  }
+
+  @Override
   public void stop() {
     this.indexerAppliedVoltage = Volts.zero();
+    this.feederAppliedVoltage = Volts.zero();
   }
 
   @Override
   public void updateInputs(IndexerInputs inputs) {
-    inputs.angularVelocity.mut_replace(indexerSim.getAngularVelocity());
-    inputs.setVoltage.mut_replace(indexerAppliedVoltage);
-    inputs.voltage.mut_replace(Volts.of(indexerSim.getInputVoltage()));
+    // inputs.indexerAngularVelocity.mut_replace(indexerSim.getAngularVelocity());
+    inputs.indexerSetVoltage.mut_replace(indexerAppliedVoltage);
+    inputs.indexerVoltage.mut_replace(Volts.of(indexerSim.getInputVoltage()));
+
+    // inputs.feederAngularVelocity.mut_replace(feederSim.getAngularVelocity());
+    inputs.feederSetVoltage.mut_replace(feederAppliedVoltage);
+    inputs.feederVoltage.mut_replace(Volts.of(feederSim.getInputVoltage()));
 
     indexerSim.setInputVoltage(indexerAppliedVoltage.in(Volts));
     indexerSim.update(0.02);
+
+    feederSim.setInputVoltage(feederAppliedVoltage.in(Volts));
+    feederSim.update(0.02);
   }
 }
