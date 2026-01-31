@@ -26,12 +26,11 @@ public class RobotGoalsBehavior extends GoalBehavior {
     intent
         .wantsToScoreTrigger()
         .onTrue(goals.setGoalCommand(RobotGoal.SHOOTING))
-        .onFalse(goals.setGoalCommand(RobotGoal.IDLE));
+        .onFalse(goals.setGoalCommand(RobotGoal.INTAKING));
     intent
         .wantsToOuttake()
         .onTrue(goals.setGoalCommand(RobotGoal.OUTTAKING))
-        .onFalse(goals.setGoalCommand(RobotGoal.IDLE));
-
+        .onFalse(goals.setGoalCommand(RobotGoal.INTAKING));
     intent
         .wantsToClimbL0()
         .onTrue(goals.setGoalCommand(RobotGoal.CLIMBINGL0))
