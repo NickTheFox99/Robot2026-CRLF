@@ -92,6 +92,7 @@ public class Drive extends SubsystemBase {
               1),
           getModuleTranslations());
 
+  // NOT FINAL ROBOT CONFIGURATION FOR MAPLE-SIM
   public static final DriveTrainSimulationConfig mapleSimConfig =
       DriveTrainSimulationConfig.Default()
           .withRobotMass(Kilograms.of(ROBOT_MASS_KG))
@@ -107,7 +108,9 @@ public class Drive extends SubsystemBase {
                   Volts.of(TunerConstants.FrontLeft.SteerFrictionVoltage),
                   Inches.of(2),
                   KilogramSquareMeters.of(TunerConstants.FrontLeft.SteerInertia),
-                  WHEEL_COF));
+                  WHEEL_COF))
+          // Configures the bumper size (dimensions of the robot bumper)
+          .withBumperSize(Inches.of(30), Inches.of(30));
 
   static final Lock odometryLock = new ReentrantLock();
   private final GyroIO gyroIO;
