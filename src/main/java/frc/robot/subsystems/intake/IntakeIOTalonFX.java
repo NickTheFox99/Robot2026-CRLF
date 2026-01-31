@@ -90,8 +90,6 @@ public class IntakeIOTalonFX implements IntakeIO {
   @Override
   public void stop() {
     leaderIntakeMotor.setControl(m_brake);
-    leaderIntakeMotor.setControl(intakeRequest.withOutput(0.0));
-    intakeExtenderMotor.setControl(m_brake);
     intakeExtenderMotor.setControl(intakeExtenderRequest.withOutput(-5.0));
   }
 
