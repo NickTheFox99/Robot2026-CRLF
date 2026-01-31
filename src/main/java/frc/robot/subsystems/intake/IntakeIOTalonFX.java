@@ -83,13 +83,13 @@ public class IntakeIOTalonFX implements IntakeIO {
     inputs.intakeExtenderVoltage.mut_replace(intakeExtenderMotor.getMotorVoltage().getValue());
     inputs.intakeExtenderSetVoltage.mut_replace(intakeExtenderSetPoint);
     inputs.intakeExtenderSupplyCurrent.mut_replace(
-        intakeExtenderMotor.getSupplyCurrent().getValue());
+    intakeExtenderMotor.getSupplyCurrent().getValue());
     // inputs.intakeExtenderAngle.(angle(0.0)); // TODO for replay
   }
 
   @Override
   public void stop() {
-    followIntakeMotor.setControl(m_brake);
+    leaderIntakeMotor.setControl(m_brake);
     intakeExtenderMotor.setControl(m_brake);
   }
 
