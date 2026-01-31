@@ -32,11 +32,6 @@ public class OperatorIntent implements OperatorIntentEvents {
   }
 
   @Override
-  public Trigger wantsToIntakeTrigger() {
-    return driver.leftTrigger(0.5);
-  }
-
-  @Override
   public Trigger wantsToClimbL0() {
     return driver.povLeft();
   }
@@ -56,7 +51,12 @@ public class OperatorIntent implements OperatorIntentEvents {
   }
 
   @Override
-  public Trigger wantsToOutake() {
-    return driver.a();
+  public Trigger wantsToShoot() {
+    return driver.y();
+  }
+
+  @Override
+  public Trigger wantsToOuttake() {
+    return driver.b();
   }
 }
