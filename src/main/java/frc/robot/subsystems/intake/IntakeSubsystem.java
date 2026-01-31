@@ -89,7 +89,7 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
       case OUTTAKING:
         // filler units rn
         m_IO.setIntakeTarget(Volts.of(-11.0));
-        m_IO.setIntakeExtenderTarget(Volts.of(-5.0));
+        m_IO.setIntakeExtenderTarget(Volts.of(5.0));
         break;
       case IDLE:
         stop();
