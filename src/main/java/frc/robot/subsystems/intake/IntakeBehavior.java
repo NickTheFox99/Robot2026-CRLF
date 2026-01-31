@@ -15,7 +15,7 @@ public class IntakeBehavior extends SubsystemBehavior {
   public void configure(AllEvents events) {
     events
         .match()
-        .isTeleopEnabled()
+        .isTeleopEnabledTrigger()
         .and(events.goals().isOuttakingTrigger().negate())
         .whileTrue(this.intake.intakeCommand());
     events

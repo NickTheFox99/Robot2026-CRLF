@@ -6,7 +6,6 @@ package frc.robot.subsystems.intake;
 
 import static edu.wpi.first.units.Units.*;
 
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,15 +25,12 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
 
   public IntakeSubsystem(IntakeIO IO) {
     m_IO = IO;
-    logged.intakeAngularVelocity = DegreesPerSecond.mutable(0);
     logged.intakeVoltage = Volts.mutable(0);
     logged.intakeSetVoltage = Volts.mutable(0);
+    logged.intakeSupplyCurrent = Amps.mutable(0);
     logged.intakeExtenderVoltage = Volts.mutable(0);
     logged.intakeExtenderSetVoltage = Volts.mutable(0);
     logged.intakeExtenderSupplyCurrent = Amps.mutable(0);
-    logged.intakeExtenderTorqueCurrent = Amps.mutable(0);
-    logged.intakeExtenderSetPoint = Degrees.mutable(0);
-    logged.intakeExtenderAngle = Degrees.mutable(0);
   }
 
   /**
@@ -43,7 +39,7 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
    * @param speed
    */
   public void setIntakeSpeed(Voltage speed) {
-    m_IO.setIntakerTarget(speed);
+    m_IO.setIntakeTarget(speed);
   }
 
   /**
@@ -51,8 +47,8 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
    *
    * @param speed
    */
-  public void setIntakeAngle(Angle angle) {
-    m_IO.setIntakerExtenderTarget(angle);
+  public void setIntakeVoltage(Voltage voltage) {
+    m_IO.setIntakeExtenderTarget(voltage);
   }
 
   public Command intakeCommand() {
@@ -87,18 +83,16 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
     switch (currentGoal.get()) {
       case INTAKING:
         // filler units rn
-        setIntakeSpeed(Volts.of(11.0));
-        setIntakeAngle(Degrees.of(90.0));
+        m_IO.setIntakeTarget(Volts.of(11.0));
+        m_IO.setIntakeExtenderTarget(Volts.of(5.0));
         break;
       case OUTTAKING:
         // filler units rn
-        setIntakeSpeed(Volts.of(-11.0));
-        setIntakeAngle(Degrees.of(90.0));
+        m_IO.setIntakeTarget(Volts.of(-11.0));
+        m_IO.setIntakeExtenderTarget(Volts.of(5.0));
         break;
       case IDLE:
         stop();
-        // filler values, may need to be negative
-        setIntakeAngle(Degrees.of(0.0));
         break;
     }
   }

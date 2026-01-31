@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public interface MatchEvents {
 
-  public Trigger isDisabled();
+  public Trigger isDisabledTrigger();
 
-  public Trigger isAutonomousEnable();
+  public Trigger isAutonomousEnableTrigger();
 
-  public Trigger isEnabled();
+  public Trigger isEnabledTrigger();
 
-  public Trigger isTeleopEnabled();
+  public Trigger isTeleopEnabledTrigger();
 }
