@@ -1,6 +1,6 @@
 package frc.robot.subsystems.indexer;
 
-import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,11 +21,11 @@ public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
   public IndexerSubsystem(IndexerIO IO) {
     m_IO = IO;
 
-    m_logged.indexerAngularVelocity = DegreesPerSecond.mutable(0);
+    m_logged.indexerSupplyCurrent = Amps.mutable(0);
     m_logged.indexerVoltage = Volts.mutable(0);
     m_logged.indexerSetVoltage = Volts.mutable(0);
 
-    m_logged.feederAngularVelocity = DegreesPerSecond.mutable(0);
+    m_logged.feederSupplyCurrent = Amps.mutable(0);
     m_logged.feederVoltage = Volts.mutable(0);
     m_logged.feederSetVoltage = Volts.mutable(0);
   }

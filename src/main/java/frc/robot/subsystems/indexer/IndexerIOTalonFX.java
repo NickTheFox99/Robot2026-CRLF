@@ -62,11 +62,11 @@ public class IndexerIOTalonFX implements IndexerIO {
 
   @Override
   public void updateInputs(IndexerInputs inputs) {
-    inputs.indexerAngularVelocity.mut_replace(indexerMotor.getVelocity().getValue());
+    inputs.indexerSupplyCurrent.mut_replace(indexerMotor.getSupplyCurrent().getValue());
     inputs.indexerVoltage.mut_replace(indexerMotor.getMotorVoltage().getValue());
     inputs.indexerSetVoltage.mut_replace(indexerSetPoint);
 
-    inputs.feederAngularVelocity.mut_replace(feederMotor.getVelocity().getValue());
+    inputs.feederSupplyCurrent.mut_replace(feederMotor.getSupplyCurrent().getValue());
     inputs.feederVoltage.mut_replace(feederMotor.getMotorVoltage().getValue());
     inputs.feederSetVoltage.mut_replace(feederSetPoint);
   }
