@@ -53,6 +53,11 @@ public class RobotGoals extends VirtualSubsystem implements RobotEvents {
   }
 
   @Override
+  public Trigger isPassingTrigger() {
+    return currentGoal.is(RobotGoal.PASSING);
+  }
+
+  @Override
   public Trigger isClimbingL0() {
     return currentGoal.is(RobotGoal.CLIMBINGL0);
   }
@@ -70,10 +75,5 @@ public class RobotGoals extends VirtualSubsystem implements RobotEvents {
   @Override
   public Trigger isClimbingL3() {
     return currentGoal.is(RobotGoal.CLIMBINGL3);
-  }
-
-  @Override
-  public Trigger isPassingTrigger() {
-    return currentGoal.is(RobotGoal.PASSING);
   }
 }
