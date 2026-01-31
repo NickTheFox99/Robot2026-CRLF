@@ -11,6 +11,8 @@ import frc.robot.util.Gains;
 public class ShooterIOSim implements ShooterIO {
   private AngularVelocity shooterAngularVelocity = RPM.mutable(0.0);
 
+  private ShooterInputsAutoLogged logged = new ShooterInputsAutoLogged();
+
   private final FlywheelSim shooterSim;
 
   public ShooterIOSim() {
@@ -44,7 +46,6 @@ public class ShooterIOSim implements ShooterIO {
 
   @Override
   public void setGains(Gains gains) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setGains'");
+    System.out.println("Updating Gains");
   }
 }
