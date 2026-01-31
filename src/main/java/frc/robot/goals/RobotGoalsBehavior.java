@@ -32,6 +32,10 @@ public class RobotGoalsBehavior extends GoalBehavior {
         .onTrue(goals.setGoalCommand(RobotGoal.OUTTAKING))
         .onFalse(goals.setGoalCommand(RobotGoal.INTAKING));
     intent
+        .wantsToPass()
+        .onTrue(goals.setGoalCommand(RobotGoal.PASSING))
+        .onFalse(goals.setGoalCommand(RobotGoal.INTAKING));
+    intent
         .wantsToClimbL0()
         .onTrue(goals.setGoalCommand(RobotGoal.CLIMBINGL0))
         .onFalse(goals.setGoalCommand(RobotGoal.IDLE));
