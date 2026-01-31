@@ -95,13 +95,12 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setIntakeTarget(Voltage target) {
-    followIntakeMotor.setControl(intakeRequest.withOutput(target));
+    leaderIntakeMotor.setControl(intakeRequest.withOutput(target));
     // IntakeMotor.set(target.in(Volts));
   }
 
   @Override
   public void setIntakeExtenderTarget(Voltage target) {
     intakeExtenderMotor.setControl(intakeExtenderRequest.withOutput(target));
-    // intakeExtenderMotor.set(target.in(Volts));
   }
 }
