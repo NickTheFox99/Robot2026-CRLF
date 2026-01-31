@@ -22,9 +22,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -55,8 +53,8 @@ import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.indexer.IndexerIOTalonFX;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.subsystems.intake.IntakeBehavior;
-import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOSim;
+import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterBehavior;
 import frc.robot.subsystems.shooter.ShooterIOSim;
@@ -121,26 +119,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackRight),
                 (robotPose) -> {});
         // TODO add TalonFX
-        intake =
-            new IntakeSubsystem(
-                new IntakeIO() {
-
-                  @Override
-                  public void setIntakerTarget(Voltage target) {}
-
-                  @Override
-                  public void stop() {}
-
-                  @Override
-                  public void updateInputs(IntakeInputs input) {}
-
-                  @Override
-                  public void setIntakerExtenderTarget(Angle angle) {
-                    // TODO Auto-generated method stub
-                    throw new UnsupportedOperationException(
-                        "Unimplemented method 'setIntakerExtenderTarget'");
-                  }
-                });
+        intake = new IntakeSubsystem(new IntakeIOTalonFX(11, 12, 9, canbus));
         climber =
             new ClimberSubsystem(
                 new ClimberIO() {

@@ -27,8 +27,10 @@ public class IntakeIOTalonFX implements IntakeIO {
   /* Keep a neutral out so we can disable the motor */
   private final NeutralOut m_brake = new NeutralOut();
 
-  public IntakeIOTalonFX(int IntakeMotorCAN, int IntakeExtenderMotorCAN, CANBus canbus) {
-    followIntakeMotor = new TalonFX(IntakeMotorCAN, canbus);
+  public IntakeIOTalonFX(
+      int IntakeLeadMotorCAN, int IntakeFollowMotorCAN, int IntakeExtenderMotorCAN, CANBus canbus) {
+    leaderIntakeMotor = new TalonFX(IntakeLeadMotorCAN, canbus);
+    followIntakeMotor = new TalonFX(IntakeFollowMotorCAN, canbus);
     intakeExtenderMotor = new TalonFX(IntakeExtenderMotorCAN, canbus);
     intakeRequest = new VoltageOut(0.0);
     intakeExtenderRequest = new VoltageOut(0.0);
