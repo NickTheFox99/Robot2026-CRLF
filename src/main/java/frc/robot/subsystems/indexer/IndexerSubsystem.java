@@ -21,9 +21,13 @@ public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
   public IndexerSubsystem(IndexerIO IO) {
     m_IO = IO;
 
-    m_logged.angularVelocity = DegreesPerSecond.mutable(0);
-    m_logged.voltage = Volts.mutable(0);
-    m_logged.setVoltage = Volts.mutable(0);
+    m_logged.indexerAngularVelocity = DegreesPerSecond.mutable(0);
+    m_logged.indexerVoltage = Volts.mutable(0);
+    m_logged.indexerSetVoltage = Volts.mutable(0);
+
+    m_logged.feederAngularVelocity = DegreesPerSecond.mutable(0);
+    m_logged.feederVoltage = Volts.mutable(0);
+    m_logged.feederSetVoltage = Volts.mutable(0);
   }
 
   @Override
@@ -35,7 +39,8 @@ public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
       case IDLE:
         m_IO.stop();
       default:
-        m_IO.setIndexerTarget(this.m_state.get().volts());
+        m_IO.setIndexerTarget(this.m_state.get().indexerVolts());
+        m_IO.setFeederTarget(this.m_state.get().feederVolts());
     }
   }
 

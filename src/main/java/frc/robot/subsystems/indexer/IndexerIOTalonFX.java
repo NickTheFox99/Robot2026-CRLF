@@ -13,14 +13,17 @@ import edu.wpi.first.units.measure.Voltage;
 
 public class IndexerIOTalonFX implements IndexerIO {
   private TalonFX indexerMotor;
+  private TalonFX feederMotor;
 
   private VoltageOut request;
-  private Voltage setPoint = Volts.of(0);
+  private Voltage indexerSetPoint = Volts.of(0);
+  private Voltage feederSetPoint = Volts.of(0);
 
   private final NeutralOut m_neutralOut = new NeutralOut();
 
-  public IndexerIOTalonFX(int indexerMotorCAN, CANBus canbus) {
+  public IndexerIOTalonFX(int indexerMotorCAN, int feederMotorCAN, CANBus canbus) {
     indexerMotor = new TalonFX(indexerMotorCAN, canbus);
+    feederMotor = new TalonFX(feederMotorCAN, canbus);
     request = new VoltageOut(0.0);
     configureTalons();
   }
@@ -41,19 +44,30 @@ public class IndexerIOTalonFX implements IndexerIO {
   @Override
   public void setIndexerTarget(Voltage volts) {
     indexerMotor.setControl(request.withOutput(volts));
-    setPoint = volts;
+    indexerSetPoint = volts;
+  }
+
+  @Override
+  public void setFeederTarget(Voltage volts) {
+    feederMotor.setControl(request.withOutput(volts));
+    feederSetPoint = volts;
   }
 
   @Override
   public void stop() {
     indexerMotor.setControl(m_neutralOut);
-    setPoint = Volts.zero();
+    indexerSetPoint = Volts.zero();
+    feederSetPoint = Volts.zero();
   }
 
   @Override
   public void updateInputs(IndexerInputs inputs) {
-    inputs.angularVelocity.mut_replace(indexerMotor.getVelocity().getValue());
-    inputs.voltage.mut_replace(indexerMotor.getMotorVoltage().getValue());
-    inputs.setVoltage.mut_replace(setPoint);
+    inputs.indexerAngularVelocity.mut_replace(indexerMotor.getVelocity().getValue());
+    inputs.indexerVoltage.mut_replace(indexerMotor.getMotorVoltage().getValue());
+    inputs.indexerSetVoltage.mut_replace(indexerSetPoint);
+
+    inputs.feederAngularVelocity.mut_replace(feederMotor.getVelocity().getValue());
+    inputs.feederVoltage.mut_replace(feederMotor.getMotorVoltage().getValue());
+    inputs.feederSetVoltage.mut_replace(feederSetPoint);
   }
 }

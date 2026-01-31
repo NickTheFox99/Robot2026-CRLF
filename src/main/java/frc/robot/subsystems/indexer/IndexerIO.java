@@ -8,12 +8,18 @@ import org.littletonrobotics.junction.AutoLog;
 public interface IndexerIO {
   @AutoLog
   public class IndexerInputs {
-    public MutAngularVelocity angularVelocity;
-    public MutVoltage voltage;
-    public MutVoltage setVoltage;
+    public MutAngularVelocity indexerAngularVelocity;
+    public MutVoltage indexerVoltage;
+    public MutVoltage indexerSetVoltage;
+
+    public MutAngularVelocity feederAngularVelocity;
+    public MutVoltage feederVoltage;
+    public MutVoltage feederSetVoltage;
   }
 
   public void setIndexerTarget(Voltage volts);
+
+  public void setFeederTarget(Voltage volts);
 
   public void stop();
 
