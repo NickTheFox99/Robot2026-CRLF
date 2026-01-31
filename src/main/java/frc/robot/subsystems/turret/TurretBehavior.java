@@ -14,7 +14,7 @@ public class TurretBehavior extends SubsystemBehavior {
 
   @Override
   public void configure(AllEvents events) {
-    events.match().isTeleopEnabled().whileTrue(turret.aimingCommand());
+    events.match().isTeleopEnabledTrigger().whileTrue(turret.aimingCommand());
     events.goals().isPassingTrigger().whileTrue(turret.passingCommand());
     events.goals().isIdleTrigger().whileTrue(turret.idleCommand());
   }

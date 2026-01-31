@@ -16,22 +16,22 @@ public class MatchState extends VirtualSubsystem implements MatchEvents {
   }
 
   @Override
-  public Trigger isDisabled() {
+  public Trigger isDisabledTrigger() {
     return new Trigger(DriverStation::isDisabled);
   }
 
   @Override
-  public Trigger isAutonomousEnable() {
+  public Trigger isAutonomousEnableTrigger() {
     return new Trigger(DriverStation::isAutonomousEnabled);
   }
 
   @Override
-  public Trigger isEnabled() {
+  public Trigger isEnabledTrigger() {
     return new Trigger(DriverStation::isEnabled);
   }
 
   @Override
-  public Trigger isTeleopEnabled() {
+  public Trigger isTeleopEnabledTrigger() {
     return new Trigger(DriverStation::isTeleopEnabled);
   }
 }
