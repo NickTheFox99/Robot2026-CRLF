@@ -92,7 +92,7 @@ public class Drive extends SubsystemBase {
               1),
           getModuleTranslations());
 
-  // NOT FINAL ROBOT CONFIGURATION FOR MAPLE-SIM
+  // TODO FINAL ROBOT CONFIGURATION FOR MAPLE-SIM
   public static final DriveTrainSimulationConfig mapleSimConfig =
       DriveTrainSimulationConfig.Default()
           .withRobotMass(Kilograms.of(ROBOT_MASS_KG))

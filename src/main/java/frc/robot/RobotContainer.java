@@ -7,25 +7,24 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
 import static frc.robot.subsystems.vision.VisionConstants.camera0Name;
 import static frc.robot.subsystems.vision.VisionConstants.camera1Name;
 import static frc.robot.subsystems.vision.VisionConstants.robotToCamera0;
 import static frc.robot.subsystems.vision.VisionConstants.robotToCamera1;
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.SignalLogger;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
@@ -79,8 +78,6 @@ import java.util.stream.IntStream;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
 import org.ironmaple.simulation.seasonspecific.rebuilt2026.RebuiltFuelOnFly;
-import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeAlgaeOnFly;
-import org.ironmaple.simulation.seasonspecific.reefscape2025.ReefscapeCoralOnFly;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -303,105 +300,23 @@ public class RobotContainer {
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Spawns Algae
-    controller
-        .povLeft()
-        .onTrue(
-            Commands.runOnce(
-                () ->
-                    SimulatedArena.getInstance()
-                        .addGamePieceProjectile(
-                            new RebuiltFuelOnFly(
-                                driveSimulation.getSimulatedDriveTrainPose().getTranslation(),
-                                new Translation2d(0.4, 0),
-                                driveSimulation.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                                driveSimulation.getSimulatedDriveTrainPose().getRotation(),
-                                Meters.of(1.35),
-                                MetersPerSecond.of(1.5),
-                                Degrees.of(-60)))));
-
-    // Spawns Coral
-    controller
-        .povRight()
-        .onTrue(
-            Commands.runOnce(
-                () ->
-                    SimulatedArena.getInstance()
-                        .addGamePieceProjectile(
-                            new ReefscapeCoralOnFly(
-                                driveSimulation.getSimulatedDriveTrainPose().getTranslation(),
-                                new Translation2d(0.4, 0),
-                                driveSimulation.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                                driveSimulation.getSimulatedDriveTrainPose().getRotation(),
-                                Meters.of(1.35),
-                                MetersPerSecond.of(1.5),
-                                Degrees.of(-60)))));
-
-    // Spawns 2000 Algae
-    controller
-        .povUp()
-        .onTrue(
-            new SequentialCommandGroup(
-                IntStream.range(0, 2000)
-                    .mapToObj(
-                        i ->
-                            Commands.runOnce(
-                                () ->
-                                    SimulatedArena.getInstance()
-                                        .addGamePieceProjectile(
-                                            new ReefscapeAlgaeOnFly(
-                                                driveSimulation
-                                                    .getSimulatedDriveTrainPose()
-                                                    .getTranslation(),
-                                                new Translation2d(0.4, 0),
-                                                driveSimulation
-                                                    .getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                                                driveSimulation
-                                                    .getSimulatedDriveTrainPose()
-                                                    .getRotation(),
-                                                Meters.of(1.35),
-                                                MetersPerSecond.of(1.5),
-                                                Degrees.of(-60)))))
-                    .toArray(Command[]::new)));
-
-    // Spawns 2000 Coral
-    controller
-        .povDown()
-        .onTrue(
-            new SequentialCommandGroup(
-                IntStream.range(0, 2000)
-                    .mapToObj(
-                        i ->
-                            Commands.runOnce(
-                                () ->
-                                    SimulatedArena.getInstance()
-                                        .addGamePieceProjectile(
-                                            new ReefscapeCoralOnFly(
-                                                driveSimulation
-                                                    .getSimulatedDriveTrainPose()
-                                                    .getTranslation(),
-                                                new Translation2d(0.4, 0),
-                                                driveSimulation
-                                                    .getDriveTrainSimulatedChassisSpeedsFieldRelative(),
-                                                driveSimulation
-                                                    .getSimulatedDriveTrainPose()
-                                                    .getRotation(),
-                                                Meters.of(1.35),
-                                                MetersPerSecond.of(1.5),
-                                                Degrees.of(-60)))))
-                    .toArray(Command[]::new)));
-
-    controller
-        .a()
-        .onTrue(
-            Commands.runOnce(
-                () ->
-                    SimulatedArena.getInstance()
-                        .addGamePieceProjectile(
-                            ReefscapeCoralOnFly.DropFromCoralStation(
-                                ReefscapeCoralOnFly.CoralStationsSide.LEFT_STATION,
-                                DriverStation.Alliance.Red,
-                                true))));
+    // Maple-Sim Button Bindings 
+    // // Spawns Fuel
+    // controller
+    //     .povUp()
+    //     .onTrue(
+    //         Commands.runOnce(
+    //             () ->
+    //                 SimulatedArena.getInstance()
+    //                     .addGamePieceProjectile(
+    //                         new RebuiltFuelOnFly(
+    //                             driveSimulation.getSimulatedDriveTrainPose().getTranslation(),
+    //                             new Translation2d(0.4, 0),
+    //                             driveSimulation.getDriveTrainSimulatedChassisSpeedsFieldRelative(),
+    //                             driveSimulation.getSimulatedDriveTrainPose().getRotation(),
+    //                             Meters.of(1.35),
+    //                             MetersPerSecond.of(1.5),
+    //                             Degrees.of(-60)))));
 
     // Reset gyro to 0° when B button is pressed
     // controller
