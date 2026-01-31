@@ -14,7 +14,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class ShooterSubsystem extends SubsystemBase implements ShooterEvents {
   private ShooterIO m_IO;
-  private LoggedTunableNumber setpoint = new LoggedTunableNumber("Shooter/setpoint", 60.0);
+  private LoggedTunableNumber setpoint = new LoggedTunableNumber("Shooter/setpoint", 2500);
 
   private final EnumState<ShooterState> currentGoal =
       new EnumState<>("Shooter/States", ShooterState.IDLE);
@@ -28,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase implements ShooterEvents {
   public ShooterSubsystem(ShooterIO IO) {
     m_IO = IO;
     logged.shooterAngularVelocity = DegreesPerSecond.mutable(0);
-    logged.shooterSetpoint = RPM.mutable(2500);
+    logged.shooterSetpoint = RPM.mutable(0);
     this.m_IO.setGains(tunableGains.build());
   }
 

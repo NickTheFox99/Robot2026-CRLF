@@ -13,12 +13,16 @@
 
 package frc.robot.util;
 
+import static edu.wpi.first.units.Units.Seconds;
+
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
+import org.ironmaple.simulation.SimulatedArena;
 
 /**
  * Utility methods for working with Phoenix 6 (CTRE) devices.
@@ -67,6 +71,16 @@ public class PhoenixUtil {
    */
   public static StatusCode tryUntilOk(int maxAttempts, Supplier<StatusCode> command) {
     return tryUntilOk(maxAttempts, command, Optional.empty());
+  }
+
+  public static double[] getSimulationOdometryTimeStamps() {
+    final double[] odometryTimeStamps = new double[SimulatedArena.getSimulationSubTicksIn1Period()];
+    for (int i = 0; i < odometryTimeStamps.length; i++) {
+      odometryTimeStamps[i] =
+          Timer.getFPGATimestamp() - 0.02 + i * SimulatedArena.getSimulationDt().in(Seconds);
+    }
+
+    return odometryTimeStamps;
   }
 
   /**

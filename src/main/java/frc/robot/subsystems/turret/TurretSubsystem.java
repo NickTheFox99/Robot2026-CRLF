@@ -25,7 +25,6 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
   private TurretInputsAutoLogged logged = new TurretInputsAutoLogged();
 
   /**
-   * 
    * @param IO
    * @param poseSupplier passes in Drive::getAutoAlignPose
    */
