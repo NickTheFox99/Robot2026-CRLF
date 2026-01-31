@@ -238,14 +238,6 @@ public class RobotContainer {
 
     // Switch to X pattern when X button is pressed
     controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-    operatorIntent.wantsToClimbL1().whileTrue(climber.goToL1Command());
-    operatorIntent.wantsToClimbL2().whileTrue(climber.goToL2Command());
-    operatorIntent.wantsToClimbL3().whileTrue(climber.goToL3Command());
-
-    operatorIntent
-        .wantsToShoot()
-        .whileTrue(shooter.shooterCommand())
-        .onFalse(shooter.idleCommand());
   }
 
   public void configureCharacterizationButtonBindings() {
