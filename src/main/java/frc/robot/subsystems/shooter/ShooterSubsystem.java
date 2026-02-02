@@ -23,12 +23,12 @@ public class ShooterSubsystem extends SubsystemBase implements ShooterEvents {
 
   public LoggedTunableGainsBuilder tunableGains =
       new LoggedTunableGainsBuilder(
-          "Gains/ShooterSubsystem/", 10.0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 10.0, 0.0, 0.0, 0.0);
+          "Gains/ShooterSubsystem/", 10.0, 0, 0.3, 0.0, 0.0, 0.0, 0.0, 10.0, 10.0, 0.0, 0.0, 0.0);
 
   public ShooterSubsystem(ShooterIO IO) {
     m_IO = IO;
     logged.shooterAngularVelocity = DegreesPerSecond.mutable(0);
-    logged.shooterSetpoint = RPM.mutable(0);
+    logged.shooterSetpoint = RPM.mutable(2700.0);
     this.m_IO.setGains(tunableGains.build());
   }
 
