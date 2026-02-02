@@ -96,6 +96,7 @@ public class RobotContainer {
   private static final boolean ISTESTING = true;
 
   private final AprilTagVision vision;
+  private final RobotGoals goals = new RobotGoals();
 
   // Subsystems
   private final Drive drive;
@@ -249,7 +250,7 @@ public class RobotContainer {
         break;
     }
 
-    autoCommandManager = new AutoCommandManager(drive);
+    autoCommandManager = new AutoCommandManager(drive, goals);
 
     // Initialize reactive architecture
     operatorIntent = new OperatorIntent(0);
