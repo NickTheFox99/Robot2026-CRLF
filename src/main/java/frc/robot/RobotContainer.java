@@ -387,6 +387,7 @@ public class RobotContainer {
   }
 
   public void loggingPeriodic() {
+    if (Constants.currentMode != Constants.Mode.SIM) return;
     Logger.recordOutput(
         "FieldSimulation/RobotPosition", driveSimulation.getSimulatedDriveTrainPose());
     Logger.recordOutput(
