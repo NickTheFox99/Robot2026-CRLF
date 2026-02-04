@@ -45,6 +45,5 @@ public class ShooterIOSim implements ShooterIO {
   }
 
   @Override
-  public void setGains(Gains gains) {
-  }
+  public void setGains(Gains gains) {}
 }

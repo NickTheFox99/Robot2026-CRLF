@@ -43,14 +43,18 @@ public class IndexerIOTalonFX implements IndexerIO {
 
   @Override
   public void setIndexerTarget(Voltage volts) {
-    indexerMotor.setControl(request.withOutput(volts));
-    indexerSetPoint = volts;
+    if (!(volts == indexerSetPoint)) {
+      indexerMotor.setControl(request.withOutput(volts));
+      indexerSetPoint = volts;
+    }
   }
 
   @Override
   public void setFeederTarget(Voltage volts) {
-    feederMotor.setControl(request.withOutput(volts));
-    feederSetPoint = volts;
+    if (volts != feederSetPoint) {
+      feederMotor.setControl(request.withOutput(volts));
+      feederSetPoint = volts;
+    }
   }
 
   @Override

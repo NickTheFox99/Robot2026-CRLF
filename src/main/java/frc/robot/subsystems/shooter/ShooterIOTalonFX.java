@@ -84,9 +84,11 @@ public class ShooterIOTalonFX implements ShooterIO {
 
   @Override
   public void setShooterTarget(AngularVelocity target) {
-    shooterMotor.setControl(shooterRequest.withVelocity(target));
-    shooterSetPoint = target;
-    // shooterMotor.set(target.in(Volts));
+    if (target != shooterSetPoint) {
+      shooterMotor.setControl(shooterRequest.withVelocity(target));
+      shooterSetPoint = target;
+      // shooterMotor.set(target.in(Volts));
+    }
   }
 
   @Override
