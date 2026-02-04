@@ -42,29 +42,10 @@ public class AutoCommandManager {
   }
 
   private void configureNamedCommands(Drive drive, RobotGoals goals) {
-    // #region Stows
-    NamedCommands.registerCommand("Shooting", goals.setGoalCommand(RobotGoal.SHOOTING).andThen(new WaitCommand(5.0)));
-
-    // #endregion
-
-    // #region Intakes
-
-    // #endregion
-
-    // #region Prep Scores
-
-    // #endregion
-
-    // #region Confirm Scores
-
-    // #endregion
-
-    // #region StopScore/Backup
-
-    // #endregion
-
-    // Deprecated
-
-    // #endregion
+    NamedCommands.registerCommand(
+        "Shooting", goals.setGoalCommand(RobotGoal.SHOOTING).andThen(new WaitCommand(5.0)));
+    NamedCommands.registerCommand("Intaking", goals.setGoalCommand(RobotGoal.INTAKING));
+    // TODO: Make only the intake retract
+    NamedCommands.registerCommand("RetractIntake", goals.setGoalCommand(RobotGoal.IDLE));
   }
 }
