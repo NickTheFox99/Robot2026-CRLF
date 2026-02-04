@@ -95,7 +95,7 @@ public class IntakeIOTalonFX implements IntakeIO {
 
   @Override
   public void setIntakeTarget(Voltage target) {
-    if (target != intakeSetPoint) {
+    if (target.in(Volts) != intakeSetPoint.in(Volts)) {
       leaderIntakeMotor.setControl(intakeRequest.withOutput(target));
       intakeSetPoint = target;
       // IntakeMotor.set(target.in(Volts))
