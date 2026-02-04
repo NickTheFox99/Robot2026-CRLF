@@ -1,11 +1,15 @@
 package frc.robot.subsystems.turret;
 
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.EnumState;
+import frc.robot.util.LoggedTunableGainsBuilder;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -31,7 +35,17 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
   public TurretSubsystem(TurretIO IO, Supplier<Pose2d> poseSupplier) {
     m_IO = IO;
     m_poseSupplier = poseSupplier;
+    this.m_IO.setGains(tunableGains.build());
+    logged.turretAngle = Degrees.mutable(0);
+    logged.canCoderAngle1 = Degrees.mutable(0);
+    logged.canCoderAngle2 = Degrees.mutable(0);
+    logged.turretSetAngle = Degrees.mutable(0);
+    logged.turretAngularVelocity = DegreesPerSecond.mutable(0);
   }
+
+  public LoggedTunableGainsBuilder tunableGains =
+      new LoggedTunableGainsBuilder(
+          "Gains/ShooterSubsystem/", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
   /**
    *
@@ -85,6 +99,7 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
         m_IO.setTarget(0);
         break;
     }
+    tunableGains.ifGainsHaveChanged((gains) -> this.m_IO.setGains(gains));
   }
 
   @Override

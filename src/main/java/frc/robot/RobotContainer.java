@@ -60,6 +60,9 @@ import frc.robot.subsystems.shooter.ShooterBehavior;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.turret.TurretIOSim;
+import frc.robot.subsystems.turret.TurretIOTalonFX;
+import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
@@ -90,6 +93,7 @@ public class RobotContainer {
   private final IndexerSubsystem indexer;
   private final ClimberSubsystem climber;
   private final ShooterSubsystem shooter;
+  private final TurretSubsystem turret;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -133,6 +137,7 @@ public class RobotContainer {
         shooter = new ShooterSubsystem(new ShooterIOTalonFX(20, 10, 14, canbus));
         indexer =
             new IndexerSubsystem(new IndexerIOTalonFX(0, 1, canbus)); // TODO: find real motor IDs
+        turret = new TurretSubsystem(new TurretIOTalonFX(30, 0, 0, canbus), drive::getPose);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -194,6 +199,7 @@ public class RobotContainer {
                         true,
                         Inches.of(0).in(Meters))));
         shooter = new ShooterSubsystem(new ShooterIOSim());
+        turret = new TurretSubsystem(new TurretIOSim(), drive::getPose);
         break;
 
       default:
@@ -217,6 +223,7 @@ public class RobotContainer {
             new IndexerSubsystem(new IndexerIOTalonFX(0, 1, canbus)); // TODO: find real motor IDs
         climber = new ClimberSubsystem(null);
         shooter = new ShooterSubsystem(null);
+        turret = new TurretSubsystem(null, null);
         break;
     }
 

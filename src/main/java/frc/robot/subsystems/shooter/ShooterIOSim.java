@@ -46,6 +46,5 @@ public class ShooterIOSim implements ShooterIO {
 
   @Override
   public void setGains(Gains gains) {
-    System.out.println("Updating Gains");
   }
 }
