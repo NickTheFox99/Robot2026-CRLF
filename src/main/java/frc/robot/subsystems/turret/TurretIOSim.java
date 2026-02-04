@@ -6,6 +6,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import frc.robot.util.Gains;
 
 public class TurretIOSim implements TurretIO {
   private Voltage turretAppliedVoltage = Volts.mutable(0.0);
@@ -27,8 +28,8 @@ public class TurretIOSim implements TurretIO {
   @Override
   public void updateInputs(TurretInputs input) {
     input.turretAngularVelocity.mut_replace(turretSim.getAngularVelocity());
-    input.turretSetVoltage.mut_replace(turretAppliedVoltage);
-
+    // input.turretSetAngle.mut_replace(turretAppliedVoltage);
+    // TODO fix ^ to angle not volts
     // Periodic
     turretSim.setInputVoltage(turretAppliedVoltage.in(Volts));
     turretSim.update(0.02);
@@ -36,7 +37,9 @@ public class TurretIOSim implements TurretIO {
 
   @Override
   public void setTarget(double position) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setTarget'");
+    // TODO implement set angle on the sim
   }
+
+  @Override
+  public void setGains(Gains gains) {}
 }
