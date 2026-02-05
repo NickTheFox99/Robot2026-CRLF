@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Idle"
+            "name": "Shooting"
           }
         },
         {
@@ -17,15 +17,21 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Center.1"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "Shooting"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Center.1"
+            "name": "Idle"
           }
         }
       ]
