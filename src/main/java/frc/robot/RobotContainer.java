@@ -116,7 +116,10 @@ public class RobotContainer {
   private final CommandXboxController characterizeController = new CommandXboxController(4);
 
   // Reactive architecture components
+  private final OperatorIntent operatorIntent;
   private final MatchState matchState;
+  private final RobotGoals robotGoals;
+
   private boolean m_teleopInitialized = false;
   private AutoCommandManager autoCommandManager;
 
@@ -246,13 +249,13 @@ public class RobotContainer {
         break;
     }
 
-    autoCommandManager = new AutoCommandManager(drive, RobotGoals.getInstance());
-
     // Initialize reactive architecture
-    matchState = new MatchState();
+    operatorIntent = OperatorIntent.getInstance(0);
+    matchState = MatchState.getInstance();
+    robotGoals = RobotGoals.getInstance();
 
     // Create goal behaviors (wires operator intent → robot goals)
-    new RobotGoalsBehavior();
+    new RobotGoalsBehavior(robotGoals);
     new IndexerBehavior(indexer);
     new IntakeBehavior(intake);
     new ShooterBehavior(shooter);

@@ -1,5 +1,6 @@
 package frc.robot.operator;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -20,13 +21,23 @@ public class OperatorIntent implements OperatorIntentEvents {
 
   private static OperatorIntent instance;
 
+  private static int m_port;
+
   private OperatorIntent(int driverPort) {
     this.driver = new CommandXboxController(driverPort);
   }
 
-  public static OperatorIntent getInstance() {
+  public static OperatorIntent getInstance(int driverPort) {
     if (instance == null) {
-      instance = new OperatorIntent(0);
+      instance = new OperatorIntent(driverPort);
+      m_port = driverPort;
+    } else {
+      // Check someone attempting to get operator controls with different controller
+      if (m_port != driverPort) {
+        DriverStation.reportWarning(
+            "Attempt to get instance with different driver port number " + driverPort,
+            Thread.currentThread().getStackTrace());
+      }
     }
     return instance;
   }
