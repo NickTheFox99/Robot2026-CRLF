@@ -96,7 +96,6 @@ public class RobotContainer {
   private static final boolean ISTESTING = true;
 
   private final AprilTagVision vision;
-  private final RobotGoals goals = new RobotGoals();
 
   // Subsystems
   private final Drive drive;
@@ -117,10 +116,7 @@ public class RobotContainer {
   private final CommandXboxController characterizeController = new CommandXboxController(4);
 
   // Reactive architecture components
-  private final OperatorIntent operatorIntent;
   private final MatchState matchState;
-  private final RobotGoals robotGoals;
-
   private boolean m_teleopInitialized = false;
   private AutoCommandManager autoCommandManager;
 
@@ -250,15 +246,13 @@ public class RobotContainer {
         break;
     }
 
-    autoCommandManager = new AutoCommandManager(drive, goals);
+    autoCommandManager = new AutoCommandManager(drive, RobotGoals.getInstance());
 
     // Initialize reactive architecture
-    operatorIntent = new OperatorIntent(0);
     matchState = new MatchState();
-    robotGoals = new RobotGoals();
 
     // Create goal behaviors (wires operator intent → robot goals)
-    new RobotGoalsBehavior(robotGoals);
+    new RobotGoalsBehavior();
     new IndexerBehavior(indexer);
     new IntakeBehavior(intake);
     new ShooterBehavior(shooter);

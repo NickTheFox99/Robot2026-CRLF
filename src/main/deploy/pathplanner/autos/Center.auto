@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Idle"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Center.0"

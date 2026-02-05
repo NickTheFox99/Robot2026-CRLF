@@ -15,6 +15,17 @@ public class MatchState extends VirtualSubsystem implements MatchEvents {
     // No periodic updates needed - triggers poll DriverStation directly
   }
 
+  private void MatchState() {}
+
+  private static MatchState instance = null;
+
+  public static MatchState getInstance() {
+    if (instance == null) {
+      instance = new MatchState();
+    }
+    return instance;
+  }
+
   @Override
   public Trigger isDisabledTrigger() {
     return new Trigger(DriverStation::isDisabled);

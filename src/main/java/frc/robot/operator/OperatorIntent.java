@@ -18,8 +18,17 @@ public class OperatorIntent implements OperatorIntentEvents {
 
   private final CommandXboxController driver;
 
-  public OperatorIntent(int driverPort) {
+  private static OperatorIntent instance;
+
+  private OperatorIntent(int driverPort) {
     this.driver = new CommandXboxController(driverPort);
+  }
+
+  public static OperatorIntent getInstance() {
+    if (instance == null) {
+      instance = new OperatorIntent(0);
+    }
+    return instance;
   }
 
   @Override
