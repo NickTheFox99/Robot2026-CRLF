@@ -69,6 +69,7 @@ import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.util.AllEvents;
 import frc.robot.util.GoalBehavior;
+import frc.robot.util.LoggedTunableNumber;
 import frc.robot.util.SubsystemBehavior;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
@@ -97,6 +98,7 @@ public class RobotContainer {
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController testController = new CommandXboxController(3);
   private final CommandXboxController characterizeController = new CommandXboxController(4);
 
   // Reactive architecture components
@@ -106,6 +108,13 @@ public class RobotContainer {
 
   private boolean m_teleopInitialized = false;
   private AutoCommandManager autoCommandManager;
+
+  final LoggedTunableNumber setIndexerVolts =
+      new LoggedTunableNumber("RobotState/Indexer/setVolts", 2);
+  final LoggedTunableNumber setTurretAngle =
+      new LoggedTunableNumber("RobotState/Turret/setAngle", 45);
+  final LoggedTunableNumber setShooterSpeed =
+      new LoggedTunableNumber("RobotState/Shooter/setSpeed", 87);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CANBus canbus = new CANBus("rio");
@@ -253,6 +262,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    configureTestButtonBindings();
     configureCharacterizationButtonBindings();
   }
 
@@ -309,6 +319,21 @@ public class RobotContainer {
     //                         new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
     //                 drive)
     //             .ignoringDisable(true));
+  }
+
+  public void configureTestButtonBindings() {
+    testController
+        .a()
+        .onTrue(indexer.getNewSetIndexerVoltsCommand(setIndexerVolts))
+        .onFalse(indexer.getNewSetIndexerVoltsCommand(() -> 0.0));
+    testController
+        .x()
+        .onTrue(turret.getNewSetTurretAngleCommand(setTurretAngle))
+        .onFalse(turret.getNewSetTurretAngleCommand(() -> 0.0));
+        testController
+        .b()
+        .onTrue(shooter.getNewSetShooterSpeedCommand(setShooterSpeed))
+        .onFalse(shooter.getNewSetShooterSpeedCommand(() -> 0.0));
   }
 
   public void configureCharacterizationButtonBindings() {

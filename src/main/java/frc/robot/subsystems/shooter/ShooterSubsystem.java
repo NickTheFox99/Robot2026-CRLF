@@ -2,9 +2,13 @@ package frc.robot.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.Volts;
+
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.EnumState;
@@ -82,5 +86,12 @@ public class ShooterSubsystem extends SubsystemBase implements ShooterEvents {
   @Override
   public Trigger isShootingTrigger() {
     return currentGoal.is(ShooterState.SHOOTING);
+  }
+   public Command getNewSetShooterSpeedCommand(DoubleSupplier speed) {
+    return new InstantCommand(
+        () -> {
+          setShooterSpeed(AngularVelocity.ofBaseUnits(speed.getAsDouble(), DegreesPerSecond));
+        },
+        this);
   }
 }

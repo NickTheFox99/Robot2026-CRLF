@@ -6,10 +6,12 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.EnumState;
 import frc.robot.util.LoggedTunableGainsBuilder;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -110,5 +112,13 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
   @Override
   public Trigger isPassingTrigger() {
     return currentGoal.is(TurretState.PASSING);
+  }
+
+  public Command getNewSetTurretAngleCommand(DoubleSupplier angle) {
+    return new InstantCommand(
+        () -> {
+          m_IO.setTarget(angle.getAsDouble());
+        },
+        this);
   }
 }
