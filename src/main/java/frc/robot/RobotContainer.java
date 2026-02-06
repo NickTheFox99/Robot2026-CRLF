@@ -11,7 +11,6 @@ import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.vision.VisionConstants.camera0Name;
 import static frc.robot.subsystems.vision.VisionConstants.camera1Name;
 import static frc.robot.subsystems.vision.VisionConstants.robotToCamera0;
@@ -24,7 +23,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -139,7 +137,8 @@ public class RobotContainer {
         shooter = new ShooterSubsystem(new ShooterIOTalonFX(20, 10, 14, canbus));
         indexer =
             new IndexerSubsystem(new IndexerIOTalonFX(0, 1, canbus)); // TODO: find real motor IDs
-        turret = new TurretSubsystem(new TurretIOTalonFX(30, 0, 0, canbus), drive::getPose);
+        turret =
+            new TurretSubsystem(new TurretIOTalonFX(30, 0, 0, canbus), drive::getAutoAlignPose);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -201,7 +200,7 @@ public class RobotContainer {
                         true,
                         Inches.of(0).in(Meters))));
         shooter = new ShooterSubsystem(new ShooterIOSim());
-        turret = new TurretSubsystem(new TurretIOSim(), drive::getPose);
+        turret = new TurretSubsystem(new TurretIOSim(), drive::getAutoAlignPose);
         break;
 
       default:

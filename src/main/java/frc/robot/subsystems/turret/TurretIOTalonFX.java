@@ -22,8 +22,6 @@ public class TurretIOTalonFX implements TurretIO {
 
   public TalonFX motor;
 
-  private TurretInputsAutoLogged inputs;
-
   private Angle m_setAngle;
 
   // TODO initialize offset while disabled
@@ -42,6 +40,7 @@ public class TurretIOTalonFX implements TurretIO {
     motor = new TalonFX(motorID, canbus);
     canCoder1 = new CANcoder(canCoder1ID, canbus);
     canCoder2 = new CANcoder(canCoder2ID, canbus);
+    m_setAngle = Degrees.of(0.0);
   }
 
   public void configureTalons() {
@@ -72,7 +71,7 @@ public class TurretIOTalonFX implements TurretIO {
   public void stop() {}
 
   @Override
-  public void updateInputs(TurretInputs input) {
+  public void updateInputs(TurretInputs inputs) {
     inputs.turretAngle.mut_replace(motor.getPosition().getValue());
     inputs.turretAngularVelocity.mut_replace(motor.getVelocity().getValue());
     inputs.turretSetAngle.mut_replace(m_setAngle);
