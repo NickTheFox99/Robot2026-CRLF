@@ -37,6 +37,10 @@ public class RobotGoals extends VirtualSubsystem implements RobotEvents {
     return currentGoal.is(RobotGoal.IDLE);
   }
 
+  public Trigger isAimingTrigger() {
+    return currentGoal.is(RobotGoal.AIMING);
+  }
+
   @Override
   public Trigger isIntakingTrigger() {
     return currentGoal.is(RobotGoal.INTAKING);

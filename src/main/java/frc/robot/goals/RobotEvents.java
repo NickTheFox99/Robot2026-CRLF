@@ -6,6 +6,8 @@ public interface RobotEvents {
 
   public Trigger isIdleTrigger();
 
+  public Trigger isAimingTrigger();
+
   public Trigger isIntakingTrigger();
 
   public Trigger isOuttakingTrigger();
