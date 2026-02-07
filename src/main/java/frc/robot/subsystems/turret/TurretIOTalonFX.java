@@ -12,9 +12,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import frc.robot.util.Gains;
+import org.littletonrobotics.junction.Logger;
 
 public class TurretIOTalonFX implements TurretIO {
 
@@ -36,14 +36,48 @@ public class TurretIOTalonFX implements TurretIO {
 
   private CANcoder canCoder2;
 
+  private final double KCANTIMEOUT = 0.010;
+  private static final double GEAR_0_TOOTH_COUNT = 70.0;
+  private static final double GEAR_1_TOOTH_COUNT = 36.0;
+  private static final double GEAR_2_TOOTH_COUNT = 34.0;
+
+  private static final double SLOPE =
+      (GEAR_2_TOOTH_COUNT * GEAR_1_TOOTH_COUNT)
+          / ((GEAR_1_TOOTH_COUNT - GEAR_2_TOOTH_COUNT) * GEAR_0_TOOTH_COUNT);
+
   public TurretIOTalonFX(int motorID, int canCoder1ID, int canCoder2ID, CANBus canbus) {
     motor = new TalonFX(motorID, canbus);
     canCoder1 = new CANcoder(canCoder1ID, canbus);
     canCoder2 = new CANcoder(canCoder2ID, canbus);
     m_setAngle = Degrees.of(0.0);
+
+    configureTalons();
+  }
+
+  public static double calculateTurretAngleFromCANCoderDegrees(double e1, double e2) {
+    double difference = e2 - e1;
+    if (difference > 250) {
+      difference -= 360;
+    }
+    if (difference < -250) {
+      difference += 360;
+    }
+    difference *= SLOPE;
+
+    double e1Rotations = (difference * GEAR_0_TOOTH_COUNT / GEAR_1_TOOTH_COUNT) / 360.0;
+    double e1RotationsFloored = Math.floor(e1Rotations);
+    double turretAngle =
+        (e1RotationsFloored * 360.0 + e1) * (GEAR_1_TOOTH_COUNT / GEAR_0_TOOTH_COUNT);
+    if (turretAngle - difference < -100) {
+      turretAngle += GEAR_1_TOOTH_COUNT / GEAR_0_TOOTH_COUNT * 360.0;
+    } else if (turretAngle - difference > 100) {
+      turretAngle -= GEAR_1_TOOTH_COUNT / GEAR_0_TOOTH_COUNT * 360.0;
+    }
+    return turretAngle;
   }
 
   public void configureTalons() {
+
     TalonFXConfiguration cfg = new TalonFXConfiguration();
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     cfg.Slot0.GravityType = GravityTypeValue.Elevator_Static;
@@ -54,8 +88,10 @@ public class TurretIOTalonFX implements TurretIO {
     cfg.Feedback.SensorToMechanismRatio = 1.0;
     cfg.Feedback.RotorToSensorRatio = 1.0;
 
-    canCoder1.setPosition(Units.degreesToRotations(0.0));
-    canCoder2.setPosition(Units.degreesToRotations(0.0));
+    double startAngle =
+        calculateTurretAngleFromCANCoderDegrees(
+            getCanCoderAngle1().in(Degrees), getCanCoderAngle2().in(Degrees));
+    motor.setPosition(startAngle, KCANTIMEOUT);
   }
 
   @Override
@@ -72,6 +108,11 @@ public class TurretIOTalonFX implements TurretIO {
 
   @Override
   public void updateInputs(TurretInputs inputs) {
+    double canCoderAngle =
+        calculateTurretAngleFromCANCoderDegrees(
+            getCanCoderAngle1().in(Degrees), getCanCoderAngle2().in(Degrees));
+    Logger.recordOutput("Turret/AlgorithmOutput", canCoderAngle);
+
     inputs.turretAngle.mut_replace(motor.getPosition().getValue());
     inputs.turretAngularVelocity.mut_replace(motor.getVelocity().getValue());
     inputs.turretSetAngle.mut_replace(m_setAngle);
@@ -97,5 +138,15 @@ public class TurretIOTalonFX implements TurretIO {
     motionMagicConfigs.MotionMagicExpo_kV = gains.kMMEV;
     motionMagicConfigs.MotionMagicExpo_kA = gains.kMMEA;
     motor.getConfigurator().apply(motionMagicConfigs);
+  }
+
+  @Override
+  public Angle getCanCoderAngle1() {
+    return canCoder1.getAbsolutePosition().getValue();
+  }
+
+  @Override
+  public Angle getCanCoderAngle2() {
+    return canCoder2.getAbsolutePosition().getValue();
   }
 }

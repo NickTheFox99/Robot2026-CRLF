@@ -69,6 +69,7 @@ import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.turret.TurretBehavior;
 import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
@@ -94,7 +95,7 @@ import org.littletonrobotics.junction.Logger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // Set to true when Testing Indivisule subsystems
+  // Set to true when Testing Individual subsystems
   // This should stay false otherwise
   private static final boolean ISTESTING = false;
 
@@ -159,7 +160,10 @@ public class RobotContainer {
         shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, 10, upperCanbus));
         indexer = new IndexerSubsystem(new IndexerIOTalonFX(8, 9, upperCanbus));
         turret =
-            new TurretSubsystem(new TurretIOTalonFX(7, 1, 2, upperCanbus), drive::getAutoAlignPose);
+            new TurretSubsystem(
+                new TurretIOTalonFX(7, 1, 2, upperCanbus),
+                drive::getAutoAlignPose,
+                new Pose2d(0.0, 0.0, new Rotation2d()));
         hood = new HoodSubsystem(new HoodIOTalonFX(11, upperCanbus));
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
@@ -224,7 +228,9 @@ public class RobotContainer {
                         true,
                         Inches.of(0).in(Meters))));
         shooter = new ShooterSubsystem(new ShooterIOSim());
-        turret = new TurretSubsystem(new TurretIOSim(), drive::getAutoAlignPose);
+        turret =
+            new TurretSubsystem(
+                new TurretIOSim(), drive::getAutoAlignPose, new Pose2d(0.0, 0.0, new Rotation2d()));
         hood = new HoodSubsystem(new HoodIOSim());
         break;
 
@@ -248,7 +254,9 @@ public class RobotContainer {
         indexer = new IndexerSubsystem(new IndexerIO() {});
         climber = new ClimberSubsystem(new ClimberIO() {});
         shooter = new ShooterSubsystem(new ShooterIO() {});
-        turret = new TurretSubsystem(new TurretIO() {}, drive::getAutoAlignPose);
+        turret =
+            new TurretSubsystem(
+                new TurretIO() {}, drive::getAutoAlignPose, new Pose2d(0.0, 0.0, new Rotation2d()));
         hood = new HoodSubsystem(new HoodIO() {});
         break;
     }
@@ -267,6 +275,7 @@ public class RobotContainer {
     new ShooterBehavior(shooter);
     new ClimberBehavior(climber);
     new HoodBehavior(hood);
+    new TurretBehavior(turret);
 
     // TODO (students): Create subsystem behaviors here, e.g.:
     // new intakeBehavior(intake);
