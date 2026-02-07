@@ -19,7 +19,9 @@ public interface ClimberIO {
     public MutCurrent torqueCurrent;
   }
 
-  public void setClimberHeight(Distance target);
+  public default void setClimberHeight(Distance target) {}
+  ;
 
-  public void updateInputs(ClimberInputs input);
+  public default void updateInputs(ClimberInputs input) {}
+  ;
 }

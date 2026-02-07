@@ -16,11 +16,15 @@ public interface TurretIO {
     public MutAngle canCoderAngle2;
   }
 
-  public void setTarget(double angle);
+  public default void setTarget(double angle) {}
+  ;
 
-  public void stop();
+  public default void stop() {}
+  ;
 
-  public void updateInputs(TurretInputs input);
+  public default void updateInputs(TurretInputs input) {}
+  ;
 
-  public void setGains(Gains gains);
+  public default void setGains(Gains gains) {}
+  ;
 }
