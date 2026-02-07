@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -444,8 +445,12 @@ public class RobotContainer {
   public void resetSimulation() {
     if (Constants.currentMode != Constants.Mode.SIM) return;
 
-    drive.setPose(new Pose2d(3, 3, new Rotation2d()));
+    // drive.setPose(new Pose2d(3, 3, new Rotation2d()));
     SimulatedArena.getInstance().resetFieldForAuto();
+    if (DriverStation.isDisabled()) {
+      // Disable AprilTags when disabled
+      vision.disableUpdateOdometryBasedOnApriltags();
+    }
   }
 
   public void updateSimulation() {
