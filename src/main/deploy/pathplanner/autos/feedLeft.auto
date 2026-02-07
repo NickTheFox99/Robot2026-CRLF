@@ -11,6 +11,24 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Passing"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedLeft.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedLeft.2"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "feedLeft.1"

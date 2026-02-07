@@ -93,7 +93,9 @@ import org.littletonrobotics.junction.Logger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private static final boolean ISTESTING = true;
+  //Set to true when Testing Indivisule subsystems
+  //This should stay false otherwise
+  private static final boolean ISTESTING = false;
 
   private final AprilTagVision vision;
 
@@ -248,6 +250,8 @@ public class RobotContainer {
         hood = new HoodSubsystem(new HoodIO() {});
         break;
     }
+
+    autoCommandManager = new AutoCommandManager(drive, RobotGoals.getInstance());
 
     // Initialize reactive architecture
     operatorIntent = OperatorIntent.getInstance(0);

@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Passing"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "feedRight.1"
