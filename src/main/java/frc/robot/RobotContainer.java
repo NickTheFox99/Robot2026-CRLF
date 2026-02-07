@@ -47,6 +47,10 @@ import frc.robot.subsystems.drive.GyroIOSim;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.hood.HoodBehavior;
+import frc.robot.subsystems.hood.HoodIOSim;
+import frc.robot.subsystems.hood.HoodIOTalonFX;
+import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.indexer.IndexerBehavior;
 import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerIOSim;
@@ -100,6 +104,7 @@ public class RobotContainer {
   private final ClimberSubsystem climber;
   private final ShooterSubsystem shooter;
   private final TurretSubsystem turret;
+  private final HoodSubsystem hood;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -147,6 +152,7 @@ public class RobotContainer {
         indexer = new IndexerSubsystem(new IndexerIOTalonFX(8, 9, upperCanbus));
         turret =
             new TurretSubsystem(new TurretIOTalonFX(7, 1, 2, upperCanbus), drive::getAutoAlignPose);
+        hood = new HoodSubsystem(new HoodIOTalonFX(11, upperCanbus));
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -209,6 +215,7 @@ public class RobotContainer {
                         Inches.of(0).in(Meters))));
         shooter = new ShooterSubsystem(new ShooterIOSim());
         turret = new TurretSubsystem(new TurretIOSim(), drive::getAutoAlignPose);
+        hood = new HoodSubsystem(new HoodIOSim());
         break;
 
       default:
@@ -248,6 +255,7 @@ public class RobotContainer {
     new IntakeBehavior(intake);
     new ShooterBehavior(shooter);
     new ClimberBehavior(climber);
+    new HoodBehavior(hood);
 
     // TODO (students): Create subsystem behaviors here, e.g.:
     // new intakeBehavior(intake);
@@ -255,6 +263,8 @@ public class RobotContainer {
 
     // Configure all behaviors
     GoalBehavior.configureAll(operatorIntent);
+    SubsystemBehavior.configureAll(
+        new AllEvents(robotGoals, matchState, indexer, shooter, intake, climber, hood));
 
     // Configure the button bindings
     configureButtonBindings(ISTESTING);
@@ -272,7 +282,7 @@ public class RobotContainer {
       configureTestButtonBindings();
     } else {
       SubsystemBehavior.configureAll(
-          new AllEvents(robotGoals, matchState, indexer, shooter, intake, climber));
+          new AllEvents(robotGoals, matchState, indexer, shooter, intake, climber, hood));
     }
     // Reset gyro / odometry
     final Runnable resetOdometry =

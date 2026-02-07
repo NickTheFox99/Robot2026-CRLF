@@ -46,7 +46,7 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
 
   public LoggedTunableGainsBuilder tunableGains =
       new LoggedTunableGainsBuilder(
-          "Gains/ShooterSubsystem/", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+          "Gains/TurretSubsystem/", 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
   /**
    *

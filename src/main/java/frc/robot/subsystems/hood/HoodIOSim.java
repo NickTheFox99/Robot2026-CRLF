@@ -6,7 +6,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
-import frc.robot.subsystems.hood.HoodIO.HoodInputs;
 
 public class HoodIOSim implements HoodIO {
 
@@ -26,7 +25,7 @@ public class HoodIOSim implements HoodIO {
   public HoodIOSim() {
     hoodSim =
         new SingleJointedArmSim(
-            kArmMotor, kGearing, kMoI, kArmLength, kMinAngle, kMaxAngle, kSimulateGravity, 0, 0.01);
+            kArmMotor, kGearing, kMoI, kArmLength, kMinAngle, kMaxAngle, kSimulateGravity, 0);
   }
 
   @Override

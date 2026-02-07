@@ -10,7 +10,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class HoodSubsystem extends SubsystemBase implements HoodEvents {
   // Implementation goes here † ₀ ᴥ ₀ †
-  
+
   private HoodIO m_IO;
 
   private final EnumState<HoodState> currentGoal = new EnumState<>("Hood/States", HoodState.IDLE);
