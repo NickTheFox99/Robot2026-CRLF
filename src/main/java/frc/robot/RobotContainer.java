@@ -93,8 +93,8 @@ import org.littletonrobotics.junction.Logger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  //Set to true when Testing Indivisule subsystems
-  //This should stay false otherwise
+  // Set to true when Testing Indivisule subsystems
+  // This should stay false otherwise
   private static final boolean ISTESTING = false;
 
   private final AprilTagVision vision;
