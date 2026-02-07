@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -148,8 +149,20 @@ public class RobotContainer {
                 (robotPose) -> {});
         intake = new IntakeSubsystem(new IntakeIOTalonFX(1, 2, 3, upperCanbus));
         climber = new ClimberSubsystem(new ClimberIO() {}); // TODO: Implement Climber
-        shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, upperCanbus));
+        shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, 10, upperCanbus));
         indexer = new IndexerSubsystem(new IndexerIOTalonFX(8, 9, upperCanbus));
+        climber =
+            new ClimberSubsystem(
+                new ClimberIO() {
+
+                  @Override
+                  public void setClimberHeight(Distance target) {}
+
+                  @Override
+                  public void updateInputs(ClimberInputs input) {}
+                });
+        indexer =
+            new IndexerSubsystem(new IndexerIOTalonFX(0, 1, canbus)); // TODO: find real motor IDs
         turret =
             new TurretSubsystem(new TurretIOTalonFX(7, 1, 2, upperCanbus), drive::getAutoAlignPose);
         hood = new HoodSubsystem(new HoodIOTalonFX(11, upperCanbus));
