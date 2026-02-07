@@ -22,6 +22,7 @@ public class ShooterIOTalonFX implements ShooterIO {
   TalonFX shooterMotor;
   TalonFX follower1;
   TalonFX follower2;
+  TalonFX follower3;
 
   private MotionMagicVelocityTorqueCurrentFOC shooterRequest;
   private AngularVelocity shooterSetPoint = RPM.of(0);
@@ -30,10 +31,15 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final NeutralOut m_brake = new NeutralOut();
 
   public ShooterIOTalonFX(
-      int shooterMotorCAN, int followerMotor1CAN, int followerMotor2CAN, CANBus canbus) {
+      int shooterMotorCAN,
+      int followerMotor1CAN,
+      int followerMotor2CAN,
+      int followerMotor3CAN,
+      CANBus canbus) {
     shooterMotor = new TalonFX(shooterMotorCAN, canbus);
     follower1 = new TalonFX(followerMotor1CAN, canbus);
     follower2 = new TalonFX(followerMotor2CAN, canbus);
+    follower3 = new TalonFX(followerMotor3CAN, canbus);
     shooterRequest = new MotionMagicVelocityTorqueCurrentFOC(RPM.of(0.0));
     configureTalons();
   }
@@ -81,6 +87,17 @@ public class ShooterIOTalonFX implements ShooterIO {
     follower2Configuration.Voltage.PeakReverseVoltage = 16.0;
     follower2.getConfigurator().apply(follower2Configuration);
     follower2.setControl(new Follower(shooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+
+    TalonFXConfiguration follower3Configuration = new TalonFXConfiguration();
+    follower3Configuration.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    follower3Configuration.CurrentLimits.StatorCurrentLimit = 80.0;
+    follower3Configuration.CurrentLimits.StatorCurrentLimitEnable = true;
+    follower3Configuration.CurrentLimits.SupplyCurrentLimit = 40.0;
+    follower3Configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
+    follower3Configuration.Voltage.PeakForwardVoltage = 16.0;
+    follower3Configuration.Voltage.PeakReverseVoltage = 16.0;
+    follower3.getConfigurator().apply(follower3Configuration);
+    follower3.setControl(new Follower(shooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
   }
 
   @Override

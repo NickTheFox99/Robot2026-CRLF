@@ -47,6 +47,11 @@ import frc.robot.subsystems.drive.GyroIOSim;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.hood.HoodBehavior;
+import frc.robot.subsystems.hood.HoodIO;
+import frc.robot.subsystems.hood.HoodIOSim;
+import frc.robot.subsystems.hood.HoodIOTalonFX;
+import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.indexer.IndexerBehavior;
 import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerIOSim;
@@ -100,6 +105,7 @@ public class RobotContainer {
   private final ClimberSubsystem climber;
   private final ShooterSubsystem shooter;
   private final TurretSubsystem turret;
+  private final HoodSubsystem hood;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -124,6 +130,7 @@ public class RobotContainer {
       new LoggedTunableNumber("RobotState/Intake/setVolts", 2);
   final LoggedTunableNumber setIntakeExtenderVolts =
       new LoggedTunableNumber("RobotState/IntakeExtender/setVolts", 2);
+  final LoggedTunableNumber setHoodAngle = new LoggedTunableNumber("RobotState/Hood/setAngle", 45);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CANBus rioCanbus = new CANBus("rio");
@@ -143,10 +150,11 @@ public class RobotContainer {
                 (robotPose) -> {});
         intake = new IntakeSubsystem(new IntakeIOTalonFX(1, 2, 3, upperCanbus));
         climber = new ClimberSubsystem(new ClimberIO() {}); // TODO: Implement Climber
-        shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, upperCanbus));
+        shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, 10, upperCanbus));
         indexer = new IndexerSubsystem(new IndexerIOTalonFX(8, 9, upperCanbus));
         turret =
             new TurretSubsystem(new TurretIOTalonFX(7, 1, 2, upperCanbus), drive::getAutoAlignPose);
+        hood = new HoodSubsystem(new HoodIOTalonFX(11, upperCanbus));
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -209,6 +217,7 @@ public class RobotContainer {
                         Inches.of(0).in(Meters))));
         shooter = new ShooterSubsystem(new ShooterIOSim());
         turret = new TurretSubsystem(new TurretIOSim(), drive::getAutoAlignPose);
+        hood = new HoodSubsystem(new HoodIOSim());
         break;
 
       default:
@@ -232,6 +241,7 @@ public class RobotContainer {
         climber = new ClimberSubsystem(new ClimberIO() {});
         shooter = new ShooterSubsystem(new ShooterIO() {});
         turret = new TurretSubsystem(new TurretIO() {}, drive::getAutoAlignPose);
+        hood = new HoodSubsystem(new HoodIO() {});
         break;
     }
 
@@ -248,6 +258,7 @@ public class RobotContainer {
     new IntakeBehavior(intake);
     new ShooterBehavior(shooter);
     new ClimberBehavior(climber);
+    new HoodBehavior(hood);
 
     // TODO (students): Create subsystem behaviors here, e.g.:
     // new intakeBehavior(intake);
@@ -272,7 +283,7 @@ public class RobotContainer {
       configureTestButtonBindings();
     } else {
       SubsystemBehavior.configureAll(
-          new AllEvents(robotGoals, matchState, indexer, shooter, intake, climber));
+          new AllEvents(robotGoals, matchState, indexer, shooter, intake, climber, hood));
     }
     // Reset gyro / odometry
     final Runnable resetOdometry =
@@ -328,6 +339,7 @@ public class RobotContainer {
     indexer.setTestingState();
     turret.setTestingState();
     climber.setTestingState();
+    hood.setTestingState();
     testController
         .a()
         .whileTrue(indexer.getNewSetIndexerVoltsCommand(setIndexerVolts))
@@ -350,6 +362,10 @@ public class RobotContainer {
         .whileFalse(
             intake.getNewSetIntakeExtenderVoltsCommand(
                 () -> -2.0)); // Default value for intake extender volts
+    testController
+        .povRight()
+        .whileTrue(hood.getNewSetHoodAngleCommand(setHoodAngle))
+        .whileFalse(hood.getNewSetHoodAngleCommand(() -> 0.0));
   }
 
   public void configureCharacterizationButtonBindings() {

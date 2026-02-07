@@ -88,12 +88,12 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
     Logger.processInputs("RobotState/Intake", logged);
     switch (currentGoal.get()) {
       case INTAKING:
-        // filler units rn
+        // TODO filler units rn
         m_IO.setIntakeTarget(Volts.of(11.0));
         m_IO.setIntakeExtenderTarget(Volts.of(5.0));
         break;
       case OUTTAKING:
-        // filler units rn
+        // TODO filler units rn
         m_IO.setIntakeTarget(Volts.of(-11.0));
         m_IO.setIntakeExtenderTarget(Volts.of(5.0));
         break;

@@ -8,6 +8,7 @@ package frc.robot.goals;
  */
 public enum RobotGoal {
   IDLE,
+  AIMING,
   INTAKING,
   OUTTAKING,
   SHOOTING,
