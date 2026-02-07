@@ -23,7 +23,7 @@ public class ClimberSubsystem extends SubsystemBase implements ClimberEvents {
   /** Creates a new ExampleSubsystem. */
   private ClimberIO m_IO;
 
-  private final EnumState<ClimberState> currentGoal =
+  private final EnumState<ClimberState> m_state =
       new EnumState<>("Climber/States", ClimberState.L0);
 
   private ClimberInputsAutoLogged logged = new ClimberInputsAutoLogged();
@@ -47,11 +47,15 @@ public class ClimberSubsystem extends SubsystemBase implements ClimberEvents {
     m_IO.setClimberHeight(target);
   }
 
+  public void setTestingState() {
+    m_state.set(ClimberState.TESTING);
+  }
+
   @Override
   public void periodic() {
     m_IO.updateInputs(logged);
     Logger.processInputs("RobotState/Climber", logged);
-    switch (currentGoal.get()) {
+    switch (m_state.get()) {
       case L0:
         setClimberHeight(Inches.of(0));
         break;
@@ -68,38 +72,38 @@ public class ClimberSubsystem extends SubsystemBase implements ClimberEvents {
   }
 
   public Command goToL0Command() {
-    return runOnce(() -> currentGoal.set(ClimberState.L0));
+    return runOnce(() -> m_state.set(ClimberState.L0));
   }
 
   public Command goToL1Command() {
-    return runOnce(() -> currentGoal.set(ClimberState.L1));
+    return runOnce(() -> m_state.set(ClimberState.L1));
   }
 
   public Command goToL2Command() {
-    return runOnce(() -> currentGoal.set(ClimberState.L2));
+    return runOnce(() -> m_state.set(ClimberState.L2));
   }
 
   public Command goToL3Command() {
-    return runOnce(() -> currentGoal.set(ClimberState.L3));
+    return runOnce(() -> m_state.set(ClimberState.L3));
   }
 
   @Override
   public Trigger goToL0Trigger() {
-    return currentGoal.is(ClimberState.L0);
+    return m_state.is(ClimberState.L0);
   }
 
   @Override
   public Trigger goToL1Trigger() {
-    return currentGoal.is(ClimberState.L1);
+    return m_state.is(ClimberState.L1);
   }
 
   @Override
   public Trigger GoToL2Trigger() {
-    return currentGoal.is(ClimberState.L2);
+    return m_state.is(ClimberState.L2);
   }
 
   @Override
   public Trigger GoToL3Trigger() {
-    return currentGoal.is(ClimberState.L3);
+    return m_state.is(ClimberState.L3);
   }
 }

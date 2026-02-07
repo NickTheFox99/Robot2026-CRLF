@@ -4,9 +4,11 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.EnumState;
+import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
@@ -30,6 +32,10 @@ public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
     m_logged.feederSetVoltage = Volts.mutable(0);
   }
 
+  public void setTestingState() {
+    m_state.set(IndexerState.TESTING);
+  }
+
   @Override
   public void periodic() {
     m_IO.updateInputs(m_logged);
@@ -38,7 +44,7 @@ public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
     switch (this.m_state.get()) {
       case IDLE:
         m_IO.stop();
-      default:
+      case FEEDING:
         m_IO.setIndexerTarget(this.m_state.get().indexerVolts());
         m_IO.setFeederTarget(this.m_state.get().feederVolts());
     }
@@ -60,5 +66,13 @@ public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
 
   public Command indexingCommand() {
     return runOnce(() -> m_state.set(IndexerState.FEEDING));
+  }
+
+  public Command getNewSetIndexerVoltsCommand(DoubleSupplier volts) {
+    return new InstantCommand(
+        () -> {
+          m_IO.setIndexerTarget(Volts.of(volts.getAsDouble()));
+        },
+        this);
   }
 }

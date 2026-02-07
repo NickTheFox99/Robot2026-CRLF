@@ -8,9 +8,11 @@ import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.EnumState;
+import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 /** Sets the controless the intake and endexer */
@@ -72,6 +74,10 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
         });
   }
 
+  public void setTestingState() {
+    currentGoal.set(IntakeState.TESTING);
+  }
+
   public void stop() {
     m_IO.stop();
   }
@@ -110,5 +116,21 @@ public class IntakeSubsystem extends SubsystemBase implements IntakeEvents {
   @Override
   public Trigger isOuttakingTrigger() {
     return currentGoal.is(IntakeState.OUTTAKING);
+  }
+
+  public Command getNewSetIntakeVoltsCommand(DoubleSupplier volts) {
+    return new InstantCommand(
+        () -> {
+          m_IO.setIntakeTarget(Volts.of(volts.getAsDouble()));
+        },
+        this);
+  }
+
+  public Command getNewSetIntakeExtenderVoltsCommand(DoubleSupplier volts) {
+    return new InstantCommand(
+        () -> {
+          m_IO.setIntakeExtenderTarget(Volts.of(volts.getAsDouble()));
+        },
+        this);
   }
 }
