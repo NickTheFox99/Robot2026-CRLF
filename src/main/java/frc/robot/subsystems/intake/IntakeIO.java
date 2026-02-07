@@ -19,11 +19,15 @@ public interface IntakeIO {
     public MutAngle intakeExtenderAngle;
   }
 
-  public void setIntakeTarget(Voltage target);
+  public default void setIntakeTarget(Voltage target) {}
+  ;
 
-  public void setIntakeExtenderTarget(Voltage voltage);
+  public default void setIntakeExtenderTarget(Voltage voltage) {}
+  ;
 
-  public void stop();
+  public default void stop() {}
+  ;
 
-  public void updateInputs(IntakeInputs input);
+  public default void updateInputs(IntakeInputs input) {}
+  ;
 }

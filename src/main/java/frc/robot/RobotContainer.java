@@ -22,7 +22,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -49,17 +48,21 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.indexer.IndexerBehavior;
+import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerIOSim;
 import frc.robot.subsystems.indexer.IndexerIOTalonFX;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.subsystems.intake.IntakeBehavior;
+import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOSim;
 import frc.robot.subsystems.intake.IntakeIOTalonFX;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterBehavior;
+import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 import frc.robot.subsystems.shooter.ShooterIOTalonFX;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.turret.TurretIO;
 import frc.robot.subsystems.turret.TurretIOSim;
 import frc.robot.subsystems.turret.TurretIOTalonFX;
 import frc.robot.subsystems.turret.TurretSubsystem;
@@ -123,7 +126,8 @@ public class RobotContainer {
       new LoggedTunableNumber("RobotState/IntakeExtender/setVolts", 2);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    CANBus canbus = new CANBus("rio");
+    CANBus rioCanbus = new CANBus("rio");
+    CANBus upperCanbus = new CANBus("upperCAN");
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -137,22 +141,12 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight),
                 (robotPose) -> {});
-        intake = new IntakeSubsystem(new IntakeIOTalonFX(1, 2, 3, canbus));
-        climber =
-            new ClimberSubsystem(
-                new ClimberIO() {
-
-                  @Override
-                  public void setClimberHeight(Distance target) {}
-
-                  @Override
-                  public void updateInputs(ClimberInputs input) {}
-                });
-        shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, canbus));
-        indexer =
-            new IndexerSubsystem(new IndexerIOTalonFX(8, 9, canbus));
+        intake = new IntakeSubsystem(new IntakeIOTalonFX(1, 2, 3, upperCanbus));
+        climber = new ClimberSubsystem(new ClimberIO() {}); // TODO: Implement Climber
+        shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, upperCanbus));
+        indexer = new IndexerSubsystem(new IndexerIOTalonFX(8, 9, upperCanbus));
         turret =
-            new TurretSubsystem(new TurretIOTalonFX(7, 1, 2, canbus), drive::getAutoAlignPose);
+            new TurretSubsystem(new TurretIOTalonFX(7, 1, 2, upperCanbus), drive::getAutoAlignPose);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -233,12 +227,11 @@ public class RobotContainer {
                 drive::addVisionMeasurementAutoAlign,
                 new VisionIO() {},
                 new VisionIO() {});
-        intake = new IntakeSubsystem(null);
-        indexer =
-            new IndexerSubsystem(new IndexerIOTalonFX(0, 1, canbus)); // TODO: find real motor IDs
-        climber = new ClimberSubsystem(null);
-        shooter = new ShooterSubsystem(null);
-        turret = new TurretSubsystem(null, null);
+        intake = new IntakeSubsystem(new IntakeIO() {});
+        indexer = new IndexerSubsystem(new IndexerIO() {});
+        climber = new ClimberSubsystem(new ClimberIO() {});
+        shooter = new ShooterSubsystem(new ShooterIO() {});
+        turret = new TurretSubsystem(new TurretIO() {}, drive::getAutoAlignPose);
         break;
     }
 

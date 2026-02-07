@@ -13,11 +13,15 @@ public interface ShooterIO {
     public MutAngularVelocity shooterSetpoint;
   }
 
-  public void setShooterTarget(AngularVelocity target);
+  public default void setShooterTarget(AngularVelocity target) {}
+  ;
 
-  public void stop();
+  public default void stop() {}
+  ;
 
-  public void updateInputs(ShooterInputs input);
+  public default void updateInputs(ShooterInputs input) {}
+  ;
 
-  public void setGains(Gains gains);
+  public default void setGains(Gains gains) {}
+  ;
 }

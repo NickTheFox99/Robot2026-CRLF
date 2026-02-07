@@ -17,11 +17,15 @@ public interface IndexerIO {
     public MutVoltage feederSetVoltage;
   }
 
-  public void setIndexerTarget(Voltage volts);
+  public default void setIndexerTarget(Voltage volts) {}
+  ;
 
-  public void setFeederTarget(Voltage volts);
+  public default void setFeederTarget(Voltage volts) {}
+  ;
 
-  public void stop();
+  public default void stop() {}
+  ;
 
-  public void updateInputs(IndexerInputs inputs);
+  public default void updateInputs(IndexerInputs inputs) {}
+  ;
 }
