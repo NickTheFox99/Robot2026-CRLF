@@ -53,5 +53,10 @@ public class RobotGoalsBehavior extends GoalBehavior {
         .wantsToClimbL3()
         .onTrue(goals.setGoalCommand(RobotGoal.CLIMBINGL3))
         .onFalse(goals.setGoalCommand(RobotGoal.IDLE));
+
+    intent
+        .wantsToAim()
+        .onTrue(goals.setGoalCommand(RobotGoal.AIMING))
+        .onFalse(goals.setGoalCommand(RobotGoal.IDLE));
   }
 }

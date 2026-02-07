@@ -24,4 +24,6 @@ public interface OperatorIntentEvents {
   Trigger wantsToShoot();
 
   Trigger wantsToPass();
+
+  Trigger wantsToAim();
 }

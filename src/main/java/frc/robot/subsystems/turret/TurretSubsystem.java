@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +26,8 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
 
   private static final double VIEW_CHANGE = 0.0;
   private static final double TURRET_MIN_POS = -105.0; // -160.0;//137.0
-  private static final double TURRET_MAX_POS = 105.0; // 110.0;//115.0
+  private static final double TURRET_MAX_POS =
+      105.0; // 110.0;//115.0 private static final double GEAR_0_TOOTH_COUNT = 70.0;
 
   private TurretInputsAutoLogged logged = new TurretInputsAutoLogged();
 
@@ -33,15 +35,21 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
    * @param IO
    * @param poseSupplier passes in Drive::getAutoAlignPose
    */
-  public TurretSubsystem(TurretIO IO, Supplier<Pose2d> poseSupplier) {
+  private final Supplier<Pose2d> robotPoseSupplier;
+
+  private final Pose2d goalPose;
+
+  public TurretSubsystem(TurretIO IO, Supplier<Pose2d> robotPoseSupplier, Pose2d goalPose) {
     m_IO = IO;
-    m_poseSupplier = poseSupplier;
     this.m_IO.setGains(tunableGains.build());
     logged.turretAngle = Degrees.mutable(0);
     logged.canCoderAngle1 = Degrees.mutable(0);
     logged.canCoderAngle2 = Degrees.mutable(0);
     logged.turretSetAngle = Degrees.mutable(0);
     logged.turretAngularVelocity = DegreesPerSecond.mutable(0);
+
+    this.robotPoseSupplier = robotPoseSupplier;
+    this.goalPose = goalPose;
   }
 
   public LoggedTunableGainsBuilder tunableGains =
@@ -90,12 +98,11 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
 
   @Override
   public void periodic() {
-    Pose2d currentPose = m_poseSupplier.get();
     m_IO.updateInputs(logged);
     Logger.processInputs("RobotState/Turret", logged);
     switch (m_state.get()) {
       case AIMING:
-        setPosition(25);
+        aim();
         break;
       case PASSING:
         setPosition(10);
@@ -123,5 +130,16 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
           m_IO.setTarget(angle.getAsDouble());
         },
         this);
+  }
+
+  public Angle getAiming(Pose2d robotPose, Pose2d goalPose) {
+    Angle angle = goalPose.minus(robotPose).getTranslation().getAngle().getMeasure();
+    return angle;
+  }
+
+  public void aim() {
+    Angle angle = getAiming(robotPoseSupplier.get(), goalPose);
+    System.out.println(angle);
+    m_IO.setTarget(angle.in(Degrees));
   }
 }

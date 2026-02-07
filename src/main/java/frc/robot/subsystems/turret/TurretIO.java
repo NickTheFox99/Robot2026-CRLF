@@ -1,5 +1,8 @@
 package frc.robot.subsystems.turret;
 
+import static edu.wpi.first.units.Units.Degrees;
+
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.MutAngle;
 import edu.wpi.first.units.measure.MutAngularVelocity;
 import frc.robot.util.Gains;
@@ -26,5 +29,15 @@ public interface TurretIO {
   ;
 
   public default void setGains(Gains gains) {}
+  ;
+
+  public default Angle getCanCoderAngle1() {
+    return Degrees.of(0.0);
+  }
+  ;
+
+  public default Angle getCanCoderAngle2() {
+    return Degrees.of(0.0);
+  }
   ;
 }

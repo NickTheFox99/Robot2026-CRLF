@@ -84,4 +84,9 @@ public class OperatorIntent implements OperatorIntentEvents {
   public Trigger wantsToPass() {
     return driver.rightBumper();
   }
+
+  @Override
+  public Trigger wantsToAim() {
+    return driver.a();
+  }
 }
