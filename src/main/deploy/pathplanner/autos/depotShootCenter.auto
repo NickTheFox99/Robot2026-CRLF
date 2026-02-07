@@ -7,37 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center.3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
+            "pathName": "depotShootCenter.0"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Right.0"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Feed.2"
+            "pathName": "depotShootCenter.1"
           }
         },
         {
           "type": "wait",
           "data": {
             "waitTime": 3.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Climb.1"
           }
         }
       ]

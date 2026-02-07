@@ -5,33 +5,33 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Shooting"
+            "pathName": "feedRight.0"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center.0"
+            "pathName": "feedRight.1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center.1"
+            "pathName": "feedRight.2"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Shooting"
+            "pathName": "feedRight.1"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Idle"
+            "pathName": "feedRight.2"
           }
         }
       ]

@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Feed.0"
+            "pathName": "depotShootRight.0"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Feed.1"
+            "pathName": "depotShootRight.1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
           }
         }
       ]

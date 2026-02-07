@@ -7,37 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center.4"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
+            "pathName": "feedCenter.0"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Depot.0"
+            "pathName": "feedCenter.1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center.2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "pathName": "feedCenter.2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Climb.0"
+            "pathName": "feedCenter.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedCenter.2"
           }
         }
       ]
