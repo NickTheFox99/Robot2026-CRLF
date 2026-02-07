@@ -16,13 +16,22 @@ import frc.robot.util.VirtualSubsystem;
  */
 public class RobotGoals extends VirtualSubsystem implements RobotEvents {
 
+  private static RobotGoals instance;
+
   private final EnumState<RobotGoal> currentGoal =
       new EnumState<>("RobotGoals/Goal", RobotGoal.IDLE);
 
-  public RobotGoals() {}
+  private RobotGoals() {}
 
   public Command setGoalCommand(RobotGoal goal) {
     return Commands.runOnce(() -> currentGoal.set(goal));
+  }
+
+  public static RobotGoals getInstance() {
+    if (instance == null) {
+      instance = new RobotGoals();
+    }
+    return instance;
   }
 
   // public RobotGoal getCurrentGoal() {

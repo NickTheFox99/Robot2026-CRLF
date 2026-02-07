@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center.0"
+            "pathName": "depotShootLeft.0"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center.1"
+            "pathName": "depotShootLeft.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shooting"
           }
         }
       ]

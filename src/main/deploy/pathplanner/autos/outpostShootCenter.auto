@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Feed.0"
+            "pathName": "outpostShootCenter.0"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Feed.1"
+            "name": "Shooting"
           }
         }
       ]

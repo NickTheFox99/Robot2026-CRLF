@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedCenter.0"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Passing"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedCenter.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedCenter.2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedCenter.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "feedCenter.2"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
