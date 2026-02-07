@@ -13,6 +13,7 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Pounds;
 import static frc.robot.subsystems.vision.VisionConstants.camera0Name;
 import static frc.robot.subsystems.vision.VisionConstants.camera1Name;
+import static frc.robot.subsystems.vision.VisionConstants.questCamName;
 import static frc.robot.subsystems.vision.VisionConstants.robotToCamera0;
 import static frc.robot.subsystems.vision.VisionConstants.robotToCamera1;
 
@@ -22,6 +23,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
@@ -75,6 +77,7 @@ import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.vision.VisionIOQuest;
 import frc.robot.util.AllEvents;
 import frc.robot.util.GoalBehavior;
 import frc.robot.util.LoggedTunableNumber;
@@ -178,7 +181,8 @@ public class RobotContainer {
                 drive::setPose,
                 drive::addVisionMeasurementAutoAlign,
                 new VisionIOLimelight(camera0Name, drive::getRotation),
-                new VisionIOLimelight(camera1Name, drive::getRotation));
+                new VisionIOLimelight(camera1Name, drive::getRotation),
+                new VisionIOQuest(drive::getAutoAlignPose, questCamName));
         break;
 
       case SIM:
@@ -441,8 +445,12 @@ public class RobotContainer {
   public void resetSimulation() {
     if (Constants.currentMode != Constants.Mode.SIM) return;
 
-    drive.setPose(new Pose2d(3, 3, new Rotation2d()));
+    // drive.setPose(new Pose2d(3, 3, new Rotation2d()));
     SimulatedArena.getInstance().resetFieldForAuto();
+    if (DriverStation.isDisabled()) {
+      // Disable AprilTags when disabled
+      vision.disableUpdateOdometryBasedOnApriltags();
+    }
   }
 
   public void updateSimulation() {
