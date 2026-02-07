@@ -11,9 +11,9 @@ public interface HoodIO {
     public MutAngle hoodSetAngle;
   }
 
-  public void setHoodTarget(Angle target);
+  public default void setHoodTarget(Angle target) {};
 
-  public void stop();
+  public default void stop() {};
 
-  public void updateInputs(HoodInputs input);
+  public default void updateInputs(HoodInputs input) {};
 }
