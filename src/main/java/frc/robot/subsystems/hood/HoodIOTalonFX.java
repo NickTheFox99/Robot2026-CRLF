@@ -32,7 +32,7 @@ public class HoodIOTalonFX implements HoodIO {
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     cfg.Slot0.GravityType = GravityTypeValue.Elevator_Static;
     cfg.CurrentLimits.SupplyCurrentLimit = 80.0;
-    cfg.CurrentLimits.StatorCurrentLimit = 80.;
+    cfg.CurrentLimits.StatorCurrentLimit = 80.0;
     cfg.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     cfg.Feedback.SensorToMechanismRatio =
         46.2; // Combination of a 3:1 Ratio from the Motor Pinion to and a 15.4:1 Ratio Pinion to

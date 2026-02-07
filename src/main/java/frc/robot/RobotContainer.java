@@ -49,6 +49,7 @@ import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.subsystems.hood.HoodBehavior;
+import frc.robot.subsystems.hood.HoodIO;
 import frc.robot.subsystems.hood.HoodIOSim;
 import frc.robot.subsystems.hood.HoodIOTalonFX;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -130,6 +131,7 @@ public class RobotContainer {
       new LoggedTunableNumber("RobotState/Intake/setVolts", 2);
   final LoggedTunableNumber setIntakeExtenderVolts =
       new LoggedTunableNumber("RobotState/IntakeExtender/setVolts", 2);
+  final LoggedTunableNumber setHoodAngle = new LoggedTunableNumber("RobotState/Hood/setAngle", 45);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CANBus rioCanbus = new CANBus("rio");
@@ -151,18 +153,6 @@ public class RobotContainer {
         climber = new ClimberSubsystem(new ClimberIO() {}); // TODO: Implement Climber
         shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, 10, upperCanbus));
         indexer = new IndexerSubsystem(new IndexerIOTalonFX(8, 9, upperCanbus));
-        climber =
-            new ClimberSubsystem(
-                new ClimberIO() {
-
-                  @Override
-                  public void setClimberHeight(Distance target) {}
-
-                  @Override
-                  public void updateInputs(ClimberInputs input) {}
-                });
-        indexer =
-            new IndexerSubsystem(new IndexerIOTalonFX(0, 1, canbus)); // TODO: find real motor IDs
         turret =
             new TurretSubsystem(new TurretIOTalonFX(7, 1, 2, upperCanbus), drive::getAutoAlignPose);
         hood = new HoodSubsystem(new HoodIOTalonFX(11, upperCanbus));
@@ -252,6 +242,7 @@ public class RobotContainer {
         climber = new ClimberSubsystem(new ClimberIO() {});
         shooter = new ShooterSubsystem(new ShooterIO() {});
         turret = new TurretSubsystem(new TurretIO() {}, drive::getAutoAlignPose);
+        hood = new HoodSubsystem(new HoodIO() {});
         break;
     }
 
@@ -276,8 +267,6 @@ public class RobotContainer {
 
     // Configure all behaviors
     GoalBehavior.configureAll(operatorIntent);
-    SubsystemBehavior.configureAll(
-        new AllEvents(robotGoals, matchState, indexer, shooter, intake, climber, hood));
 
     // Configure the button bindings
     configureButtonBindings(ISTESTING);
@@ -351,6 +340,7 @@ public class RobotContainer {
     indexer.setTestingState();
     turret.setTestingState();
     climber.setTestingState();
+    hood.setTestingState();
     testController
         .a()
         .whileTrue(indexer.getNewSetIndexerVoltsCommand(setIndexerVolts))
@@ -373,6 +363,10 @@ public class RobotContainer {
         .whileFalse(
             intake.getNewSetIntakeExtenderVoltsCommand(
                 () -> -2.0)); // Default value for intake extender volts
+    testController
+        .povRight()
+        .whileTrue(hood.getNewSetHoodAngleCommand(setHoodAngle))
+        .whileFalse(hood.getNewSetHoodAngleCommand(() -> 0.0));
   }
 
   public void configureCharacterizationButtonBindings() {

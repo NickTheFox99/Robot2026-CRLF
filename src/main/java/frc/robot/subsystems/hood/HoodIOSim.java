@@ -35,7 +35,7 @@ public class HoodIOSim implements HoodIO {
 
   @Override
   public void stop() {
-    this.hoodAngle = Degrees.mutable(0);
+    this.hoodAngle = Radians.mutable(0);
   }
 
   public void updateInputs(HoodInputs inputs) {
@@ -43,7 +43,7 @@ public class HoodIOSim implements HoodIO {
     inputs.hoodSetAngle.mut_replace(hoodAngle);
 
     // Periodic
-    hoodSim.setInput(hoodAngle.in(Degrees));
+    hoodSim.setInput(hoodAngle.in(Radians));
     hoodSim.update(0.02);
   }
 }

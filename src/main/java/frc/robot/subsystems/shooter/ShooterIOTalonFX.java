@@ -31,7 +31,11 @@ public class ShooterIOTalonFX implements ShooterIO {
   private final NeutralOut m_brake = new NeutralOut();
 
   public ShooterIOTalonFX(
-      int shooterMotorCAN, int followerMotor1CAN, int followerMotor2CAN, int followerMotor3CAN, CANBus canbus) {
+      int shooterMotorCAN,
+      int followerMotor1CAN,
+      int followerMotor2CAN,
+      int followerMotor3CAN,
+      CANBus canbus) {
     shooterMotor = new TalonFX(shooterMotorCAN, canbus);
     follower1 = new TalonFX(followerMotor1CAN, canbus);
     follower2 = new TalonFX(followerMotor2CAN, canbus);

@@ -48,7 +48,7 @@ public class TurretIOTalonFX implements TurretIO {
     cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     cfg.Slot0.GravityType = GravityTypeValue.Elevator_Static;
     cfg.CurrentLimits.SupplyCurrentLimit = 80.0;
-    cfg.CurrentLimits.StatorCurrentLimit = 80.;
+    cfg.CurrentLimits.StatorCurrentLimit = 80.0;
     cfg.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     // TODO find actual gear ratios & set encoder ratios (math)
     cfg.Feedback.SensorToMechanismRatio = 1.0;

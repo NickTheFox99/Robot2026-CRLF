@@ -3,9 +3,11 @@ package frc.robot.subsystems.hood;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.EnumState;
+import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class HoodSubsystem extends SubsystemBase implements HoodEvents {
@@ -37,6 +39,10 @@ public class HoodSubsystem extends SubsystemBase implements HoodEvents {
         });
   }
 
+  public void setTestingState() {
+    currentGoal.set(HoodState.TESTING);
+  }
+
   @Override
   public void periodic() {
     m_IO.updateInputs(logged);
@@ -60,5 +66,13 @@ public class HoodSubsystem extends SubsystemBase implements HoodEvents {
   @Override
   public Trigger isAimingTrigger() {
     return currentGoal.is(HoodState.AIMING);
+  }
+
+  public Command getNewSetHoodAngleCommand(DoubleSupplier angle) {
+    return new InstantCommand(
+        () -> {
+          m_IO.setHoodTarget(Degrees.of(angle.getAsDouble()));
+        },
+        this);
   }
 }
