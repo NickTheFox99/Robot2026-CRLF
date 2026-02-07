@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.units.measure.Voltage;
 
 public enum IndexerState {
+  TESTING(Volts.zero(), Volts.zero()),
   IDLE(Volts.zero(), Volts.zero()),
   FEEDING(Volts.of(4.0), Volts.of(9.0));
 

@@ -32,6 +32,10 @@ public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
     m_logged.feederSetVoltage = Volts.mutable(0);
   }
 
+  public void setTestingState() {
+    m_state.set(IndexerState.TESTING);
+  }
+
   @Override
   public void periodic() {
     m_IO.updateInputs(m_logged);
@@ -40,7 +44,7 @@ public class IndexerSubsystem extends SubsystemBase implements IndexerEvents {
     switch (this.m_state.get()) {
       case IDLE:
         m_IO.stop();
-      default:
+      case FEEDING:
         m_IO.setIndexerTarget(this.m_state.get().indexerVolts());
         m_IO.setFeederTarget(this.m_state.get().feederVolts());
     }

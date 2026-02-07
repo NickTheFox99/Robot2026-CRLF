@@ -82,6 +82,8 @@ import org.littletonrobotics.junction.Logger;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private static final boolean ISTESTING = true;
+
   private final AprilTagVision vision;
 
   // Subsystems
@@ -115,6 +117,10 @@ public class RobotContainer {
       new LoggedTunableNumber("RobotState/Turret/setAngle", 45);
   final LoggedTunableNumber setShooterSpeed =
       new LoggedTunableNumber("RobotState/Shooter/setSpeed", 87);
+  final LoggedTunableNumber setIntakeVolts =
+      new LoggedTunableNumber("RobotState/Intake/setVolts", 2);
+  final LoggedTunableNumber setIntakeExtenderVolts =
+      new LoggedTunableNumber("RobotState/IntakeExtender/setVolts", 2);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CANBus canbus = new CANBus("rio");
@@ -257,12 +263,9 @@ public class RobotContainer {
 
     // Configure all behaviors
     GoalBehavior.configureAll(operatorIntent);
-    SubsystemBehavior.configureAll(
-        new AllEvents(robotGoals, matchState, indexer, shooter, intake, climber));
 
     // Configure the button bindings
-    configureButtonBindings();
-    configureTestButtonBindings();
+    configureButtonBindings(ISTESTING);
     configureCharacterizationButtonBindings();
   }
 
@@ -272,7 +275,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
+  private void configureButtonBindings(boolean isTesting) {
+    if (isTesting) {
+      configureTestButtonBindings();
+    } else {
+      SubsystemBehavior.configureAll(
+          new AllEvents(robotGoals, matchState, indexer, shooter, intake, climber));
+    }
     // Reset gyro / odometry
     final Runnable resetOdometry =
         Constants.currentMode == Constants.Mode.SIM
@@ -322,18 +331,33 @@ public class RobotContainer {
   }
 
   public void configureTestButtonBindings() {
+    intake.setTestingState();
+    shooter.setTestingState();
+    indexer.setTestingState();
+    turret.setTestingState();
+    climber.setTestingState();
     testController
         .a()
-        .onTrue(indexer.getNewSetIndexerVoltsCommand(setIndexerVolts))
-        .onFalse(indexer.getNewSetIndexerVoltsCommand(() -> 0.0));
+        .whileTrue(indexer.getNewSetIndexerVoltsCommand(setIndexerVolts))
+        .whileFalse(indexer.getNewSetIndexerVoltsCommand(() -> 0.0));
     testController
         .x()
-        .onTrue(turret.getNewSetTurretAngleCommand(setTurretAngle))
-        .onFalse(turret.getNewSetTurretAngleCommand(() -> 0.0));
-        testController
+        .whileTrue(turret.getNewSetTurretAngleCommand(setTurretAngle))
+        .whileFalse(turret.getNewSetTurretAngleCommand(() -> 0.0));
+    testController
         .b()
-        .onTrue(shooter.getNewSetShooterSpeedCommand(setShooterSpeed))
-        .onFalse(shooter.getNewSetShooterSpeedCommand(() -> 0.0));
+        .whileTrue(shooter.getNewSetShooterSpeedCommand(setShooterSpeed))
+        .whileFalse(shooter.getNewSetShooterSpeedCommand(() -> 0.0));
+    testController
+        .y()
+        .whileTrue(intake.getNewSetIntakeVoltsCommand(setIntakeVolts))
+        .whileFalse(intake.getNewSetIntakeVoltsCommand(() -> 0.0));
+    testController
+        .povUp()
+        .whileTrue(intake.getNewSetIntakeExtenderVoltsCommand(setIntakeExtenderVolts))
+        .whileFalse(
+            intake.getNewSetIntakeExtenderVoltsCommand(
+                () -> -2.0)); // Default value for intake extender volts
   }
 
   public void configureCharacterizationButtonBindings() {

@@ -21,8 +21,7 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
 
   private Supplier<Pose2d> m_poseSupplier;
 
-  private final EnumState<TurretState> currentGoal =
-      new EnumState<>("Turret/States", TurretState.IDLE);
+  private final EnumState<TurretState> m_state = new EnumState<>("Turret/States", TurretState.IDLE);
 
   private static final double VIEW_CHANGE = 0.0;
   private static final double TURRET_MIN_POS = -105.0; // -160.0;//137.0
@@ -67,22 +66,26 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
   public Command idleCommand() {
     return runOnce(
         () -> {
-          currentGoal.set(TurretState.IDLE);
+          m_state.set(TurretState.IDLE);
         });
   }
 
   public Command aimingCommand() {
     return runOnce(
         () -> {
-          currentGoal.set(TurretState.AIMING);
+          m_state.set(TurretState.AIMING);
         });
   }
 
   public Command passingCommand() {
     return runOnce(
         () -> {
-          currentGoal.set(TurretState.PASSING);
+          m_state.set(TurretState.PASSING);
         });
+  }
+
+  public void setTestingState() {
+    m_state.set(TurretState.TESTING);
   }
 
   @Override
@@ -90,15 +93,15 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
     Pose2d currentPose = m_poseSupplier.get();
     m_IO.updateInputs(logged);
     Logger.processInputs("RobotState/Turret", logged);
-    switch (currentGoal.get()) {
+    switch (m_state.get()) {
       case AIMING:
-        m_IO.setTarget(25);
+        setPosition(25);
         break;
       case PASSING:
-        m_IO.setTarget(10);
+        setPosition(10);
         break;
       case IDLE:
-        m_IO.setTarget(0);
+        setPosition(0);
         break;
     }
     tunableGains.ifGainsHaveChanged((gains) -> this.m_IO.setGains(gains));
@@ -106,12 +109,12 @@ public class TurretSubsystem extends SubsystemBase implements TurretEvents {
 
   @Override
   public Trigger isIdleTrigger() {
-    return currentGoal.is(TurretState.IDLE);
+    return m_state.is(TurretState.IDLE);
   }
 
   @Override
   public Trigger isPassingTrigger() {
-    return currentGoal.is(TurretState.PASSING);
+    return m_state.is(TurretState.PASSING);
   }
 
   public Command getNewSetTurretAngleCommand(DoubleSupplier angle) {

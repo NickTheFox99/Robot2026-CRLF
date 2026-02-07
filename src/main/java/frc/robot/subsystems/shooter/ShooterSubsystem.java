@@ -2,9 +2,6 @@ package frc.robot.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.RPM;
-import static edu.wpi.first.units.Units.Volts;
-
-import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,13 +11,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.EnumState;
 import frc.robot.util.LoggedTunableGainsBuilder;
 import frc.robot.util.LoggedTunableNumber;
+import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterSubsystem extends SubsystemBase implements ShooterEvents {
   private ShooterIO m_IO;
   private LoggedTunableNumber setpoint = new LoggedTunableNumber("Shooter/setpoint", 2500);
 
-  private final EnumState<ShooterState> currentGoal =
+  private final EnumState<ShooterState> m_state =
       new EnumState<>("Shooter/States", ShooterState.IDLE);
 
   private ShooterInputsAutoLogged logged = new ShooterInputsAutoLogged();
@@ -48,15 +46,19 @@ public class ShooterSubsystem extends SubsystemBase implements ShooterEvents {
   public Command shooterCommand() {
     return runOnce(
         () -> {
-          currentGoal.set(ShooterState.SHOOTING);
+          m_state.set(ShooterState.SHOOTING);
         });
   }
 
   public Command idleCommand() {
     return runOnce(
         () -> {
-          currentGoal.set(ShooterState.IDLE);
+          m_state.set(ShooterState.IDLE);
         });
+  }
+
+  public void setTestingState() {
+    m_state.set(ShooterState.TESTING);
   }
 
   public void stop() {
@@ -67,7 +69,7 @@ public class ShooterSubsystem extends SubsystemBase implements ShooterEvents {
   public void periodic() {
     m_IO.updateInputs(logged);
     Logger.processInputs("RobotState/Shooter", logged);
-    switch (currentGoal.get()) {
+    switch (m_state.get()) {
       case SHOOTING:
         setShooterSpeed(RPM.of(setpoint.get()));
         break;
@@ -80,14 +82,15 @@ public class ShooterSubsystem extends SubsystemBase implements ShooterEvents {
 
   @Override
   public Trigger isIdleTrigger() {
-    return currentGoal.is(ShooterState.IDLE);
+    return m_state.is(ShooterState.IDLE);
   }
 
   @Override
   public Trigger isShootingTrigger() {
-    return currentGoal.is(ShooterState.SHOOTING);
+    return m_state.is(ShooterState.SHOOTING);
   }
-   public Command getNewSetShooterSpeedCommand(DoubleSupplier speed) {
+
+  public Command getNewSetShooterSpeedCommand(DoubleSupplier speed) {
     return new InstantCommand(
         () -> {
           setShooterSpeed(AngularVelocity.ofBaseUnits(speed.getAsDouble(), DegreesPerSecond));
