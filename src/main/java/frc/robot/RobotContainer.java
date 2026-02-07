@@ -84,6 +84,7 @@ import frc.robot.util.LoggedTunableNumber;
 import frc.robot.util.SubsystemBehavior;
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
+import org.ironmaple.simulation.seasonspecific.rebuilt2026.Arena2026Rebuilt;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -190,6 +191,7 @@ public class RobotContainer {
       case SIM:
         driveSimulation =
             new SwerveDriveSimulation(Drive.mapleSimConfig, new Pose2d(3, 3, new Rotation2d()));
+        SimulatedArena.overrideInstance(new Arena2026Rebuilt(false));
         SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
         drive =
             new Drive(
