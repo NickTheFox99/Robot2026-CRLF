@@ -13,6 +13,7 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Pounds;
 import static frc.robot.subsystems.vision.VisionConstants.camera0Name;
 import static frc.robot.subsystems.vision.VisionConstants.camera1Name;
+import static frc.robot.subsystems.vision.VisionConstants.questCamName;
 import static frc.robot.subsystems.vision.VisionConstants.robotToCamera0;
 import static frc.robot.subsystems.vision.VisionConstants.robotToCamera1;
 
@@ -75,6 +76,7 @@ import frc.robot.subsystems.vision.AprilTagVision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import frc.robot.subsystems.vision.VisionIOQuest;
 import frc.robot.util.AllEvents;
 import frc.robot.util.GoalBehavior;
 import frc.robot.util.LoggedTunableNumber;
@@ -178,7 +180,8 @@ public class RobotContainer {
                 drive::setPose,
                 drive::addVisionMeasurementAutoAlign,
                 new VisionIOLimelight(camera0Name, drive::getRotation),
-                new VisionIOLimelight(camera1Name, drive::getRotation));
+                new VisionIOLimelight(camera1Name, drive::getRotation),
+                new VisionIOQuest(drive::getAutoAlignPose, questCamName));
         break;
 
       case SIM:
