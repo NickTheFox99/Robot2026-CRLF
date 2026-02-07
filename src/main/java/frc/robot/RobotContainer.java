@@ -137,8 +137,7 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight),
                 (robotPose) -> {});
-        // TODO add TalonFX
-        intake = new IntakeSubsystem(new IntakeIOTalonFX(11, 12, 9, canbus));
+        intake = new IntakeSubsystem(new IntakeIOTalonFX(1, 2, 3, canbus));
         climber =
             new ClimberSubsystem(
                 new ClimberIO() {
@@ -149,11 +148,11 @@ public class RobotContainer {
                   @Override
                   public void updateInputs(ClimberInputs input) {}
                 });
-        shooter = new ShooterSubsystem(new ShooterIOTalonFX(20, 10, 14, canbus));
+        shooter = new ShooterSubsystem(new ShooterIOTalonFX(4, 5, 6, canbus));
         indexer =
-            new IndexerSubsystem(new IndexerIOTalonFX(0, 1, canbus)); // TODO: find real motor IDs
+            new IndexerSubsystem(new IndexerIOTalonFX(8, 9, canbus));
         turret =
-            new TurretSubsystem(new TurretIOTalonFX(30, 0, 0, canbus), drive::getAutoAlignPose);
+            new TurretSubsystem(new TurretIOTalonFX(7, 1, 2, canbus), drive::getAutoAlignPose);
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
