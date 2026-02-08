@@ -26,3 +26,5 @@ public final class Main {
     RobotBase.startRobot(Robot::new);
   }
 }
+
+imagine pushing broken code in Main.java to master :3
