@@ -25,6 +25,7 @@ public final class Main {
   public static void main(String... args) {
     System.out.println("nut");
     System.out.println("fun new code :3");
+    System.out.println("moar fun new code it's doing so much stuff");
     RobotBase.startRobot(Robot::new);
   }
 }
