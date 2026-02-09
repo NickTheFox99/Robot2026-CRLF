@@ -28,3 +28,4 @@ public final class Main {
 }
 
 imagine pushing broken code in Main.java to master :3
+hey, don't ever do that again, that causes the code to break and it's industry un-standard
