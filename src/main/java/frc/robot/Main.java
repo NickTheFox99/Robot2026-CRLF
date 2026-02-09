@@ -23,14 +23,8 @@ public final class Main {
    * <p>If you change your main robot class, change the parameter type.
    */
   public static void main(String... args) {
+    System.out.println("nut");
+    System.out.println("fun new code :3");
     RobotBase.startRobot(Robot::new);
   }
 }
-
-imagine pushing broken code in Main.java to master :3
-hey, don't ever do that again, that causes the code to break and it's industry un-standard
-me when it's not doing the funnys i am testing for >w<
-
-hello?????? no workie?????
-grrwarrrrrrrrrrrrrrr
-mewo
